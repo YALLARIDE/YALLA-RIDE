@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YALLA RIDE | المنصة الاحترافية</title>
+    <title>YALLA RIDE | Developer Access</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,179 +12,131 @@
             --card-bg: #15191d;
             --text-color: #ffffff;
             --nav-bg: #1a1f24;
-            --error-red: #ff4d4d;
+            --gold: #ffcf33;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--dark-bg); color: var(--text-color); }
 
-        /* Navigation */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 5%; background: var(--nav-bg); height: 80px;
             position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid var(--primary-blue);
         }
         .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .main-logo { height: 50px; width: auto; border-radius: 8px; }
-        .logo-text { font-size: 22px; font-weight: 900; color: var(--primary-blue); }
-
+        .main-logo { height: 50px; width: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        
         .nav-links { display: flex; gap: 15px; list-style: none; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .nav-links li a:hover, .nav-links li a.active { color: var(--primary-blue); }
-
-        /* Page Layout */
-        .page { display: none; padding: 40px 5%; min-height: calc(100vh - 80px); animation: fadeIn 0.3s ease-in-out; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: bold; cursor: pointer; }
+        
+        .page { display: none; padding: 40px 5%; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* UI Components */
         .container-box { max-width: 600px; margin: auto; }
-        .card { background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { color: var(--primary-blue); margin-bottom: 20px; text-align: center; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 25px; border: 1px solid #222; text-align: center; margin-bottom: 20px; }
 
-        /* Inputs & Buttons */
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: #aaa; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #222; color: white; font-size: 1rem; }
-        input:focus { border-color: var(--primary-blue); outline: none; }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; font-size: 1rem; }
+        input { background: #222; color: white; border: 1px solid #333; }
+        button { background: var(--primary-blue); color: #000; font-weight: 900; cursor: pointer; }
+
+        .admin-item { display: flex; justify-content: space-between; align-items: center; background: #1e252b; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #333; }
+        .search-box { border: 2px solid var(--gold); margin-bottom: 20px; }
         
-        button { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--primary-blue); color: #000; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,210,255,0.3); }
-        .secondary-btn { background: transparent; border: 1px solid var(--primary-blue); color: var(--primary-blue); }
-
-        /* Stats & Tables */
-        .leaderboard-table { width: 100%; border-collapse: collapse; }
-        .leaderboard-table th { color: var(--primary-blue); padding: 10px; border-bottom: 2px solid #333; text-align: right; }
-        .leaderboard-table td { padding: 15px 10px; border-bottom: 1px solid #222; }
-        .top-rank { color: gold; font-weight: bold; }
-
-        /* Toast Notification */
-        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary-blue); color: black; padding: 12px 25px; border-radius: 50px; font-weight: bold; display: none; z-index: 2000; }
-        
-        .hidden { display: none; }
+        .mini-pic { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary-blue); margin-left: 10px; }
+        .hidden { display: none !important; }
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary-blue); color: #000; padding: 10px 30px; border-radius: 50px; font-weight: bold; display: none; z-index: 3000; }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="logo-container" onclick="showPage('home')">
-        <img src="IMG_0660.PNG" alt="YALLA RIDE LOGO" class="main-logo" onerror="this.style.display='none'">
-        <span class="logo-text">YALLA RIDE</span>
+        <img src="IMG_0660.PNG" alt="Logo" class="main-logo" onerror="this.src='https://via.placeholder.com/50'">
+        <span style="font-weight:900; color:var(--primary-blue)">YALLA RIDE</span>
     </div>
     <ul class="nav-links">
-        <li><a onclick="showPage('home')" id="link-home">الرئيسية</a></li>
+        <li><a onclick="showPage('home')">الرئيسية</a></li>
         <li><a onclick="showPage('leaderboard')">المتصدرون</a></li>
-        <li><a onclick="showPage('rides')">الجولات</a></li>
+        <li id="nav-admin" class="hidden"><a onclick="showPage('admin')" style="color: var(--gold);">🛠 لوحة المطور</a></li>
         <li id="nav-profile" class="hidden"><a onclick="showPage('profile')">ملفي</a></li>
         <li id="nav-login"><a onclick="showPage('login')">دخول</a></li>
     </ul>
 </nav>
 
-<div id="home" class="page active">
-    <div style="text-align: center; padding-top: 50px;">
-        <h1 style="font-size: 3rem; color: var(--primary-blue);">KEEP ROLLING</h1>
-        <h1 style="font-size: 3.5rem; letter-spacing: 5px;">YOUR WHEELS</h1>
-        <p style="margin-top: 20px; color: #ccc;">انضم إلى أكبر مجتمع للدراجين، سجل مسافاتك وتحدَّ أصدقاءك.</p>
-        <button onclick="showPage('login')" style="max-width: 200px; margin-top: 30px;">ابدأ الآن</button>
+<div id="login" class="page active">
+    <div class="container-box card">
+        <h2 id="auth-title">تسجيل الدخول</h2>
+        <p id="auth-subtitle" style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">أدخل بياناتك للوصول إلى حسابك</p>
+        <input type="text" id="reg-name" class="hidden" placeholder="الاسم الكامل">
+        <input type="email" id="auth-email" placeholder="البريد الإلكتروني">
+        <input type="password" id="auth-pass" placeholder="كلمة المرور">
+        <button onclick="handleAuth()" id="auth-btn">دخول</button>
+        <p onclick="toggleAuthMode()" id="toggle-text" style="cursor:pointer; font-size:0.8rem; color:var(--primary-blue)">ليس لديك حساب؟ سجل هنا</p>
     </div>
 </div>
 
-<div id="login" class="page">
-    <div class="container-box">
-        <div class="card">
-            <h2 id="auth-title">تسجيل الدخول</h2>
-            <div id="register-fields" class="hidden">
-                <div class="input-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" id="reg-name" placeholder="مثال: أحمد محمد">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>البريد الإلكتروني</label>
-                <input type="email" id="auth-email" placeholder="name@example.com">
-            </div>
-            <div class="input-group">
-                <label>كلمة المرور (كود الحماية)</label>
-                <input type="password" id="auth-pass" placeholder="••••••••">
-            </div>
-            <button onclick="handleAuth()" id="auth-btn">دخول</button>
-            <button onclick="toggleAuthMode()" class="secondary-btn" id="toggle-btn">ليس لديك حساب؟ سجل هنا</button>
+<div id="admin" class="page">
+    <div class="container-box card">
+        <h2 style="color:var(--gold);">🛠 لوحة تحكم المطور</h2>
+        <div style="display:flex; gap:10px; margin-bottom:15px;">
+            <button onclick="downloadBackup()" style="background:#28a745; color:white; font-size:0.7rem;">نسخة احتياطية</button>
+            <button onclick="document.getElementById('res-in').click()" style="background:#6f42c1; color:white; font-size:0.7rem;">استعادة</button>
+            <input type="file" id="res-in" hidden accept=".json" onchange="restoreBackup(this)">
         </div>
+        <input type="text" id="search-member" class="search-box" placeholder="بحث بالاسم..." oninput="renderAdmin()">
+        <div id="admin-results"></div>
     </div>
 </div>
 
 <div id="profile" class="page">
-    <div class="container-box">
-        <div class="card">
-            <h2>مرحباً، <span id="user-fullname" style="color: white;"></span> 👋</h2>
-            <div style="background: #1e252b; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px;">
-                <p>إجمالي المسافة المقطوعة</p>
-                <h1 style="color: var(--primary-blue);"><span id="user-total-dist">0</span> كم</h1>
-            </div>
-            <div class="input-group">
-                <label>إضافة نشاط جديد (كم)</label>
-                <input type="number" id="new-ride-val" placeholder="أدخل المسافة">
-            </div>
-            <button onclick="addDistance()">تسجيل المسافة</button>
-            <button onclick="logout()" style="background: var(--error-red); color: white; margin-top: 20px;">تسجيل الخروج</button>
+    <div class="container-box card">
+        <img id="user-pic" src="https://via.placeholder.com/120" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid var(--primary-blue);">
+        <h2 id="display-name">المستخدم</h2>
+        <div style="background:#1e252b; padding:20px; border-radius:15px; margin:15px 0;">
+            <p>المسافة المقطوعة</p>
+            <h1 style="color:var(--primary-blue)"><span id="display-km">0</span> كم</h1>
         </div>
+        <button onclick="logout()" style="background:#ff4d4d; color:white;">تسجيل الخروج</button>
     </div>
 </div>
 
 <div id="leaderboard" class="page">
-    <div class="container-box" style="max-width: 800px;">
-        <div class="card">
-            <h2>🏆 قائمة أبطال YALLA RIDE</h2>
-            <table class="leaderboard-table">
-                <thead>
-                    <tr>
-                        <th>المركز</th>
-                        <th>الاسم</th>
-                        <th>المسافة</th>
-                    </tr>
-                </thead>
-                <tbody id="leader-rows"></tbody>
-            </table>
-        </div>
+    <div class="container-box card">
+        <h2>🏆 المتصدرون</h2>
+        <div id="leaderboard-list"></div>
     </div>
 </div>
 
-<div id="rides" class="page">
-    <div class="container-box">
-        <h2>📢 الجولات المعلنة</h2>
-        <div class="card" style="margin-bottom: 15px;">
-            <h3 style="color: var(--primary-blue);">جولة ساحل المدينة</h3>
-            <p>المسافة: 35 كم | التوقيت: الجمعة 6:00 ص</p>
-            <button class="secondary-btn" onclick="showToast('تم إرسال تنبيه لك قبل الموعد!')">تنبيهي بالجولة</button>
-        </div>
-    </div>
+<div id="home" class="page" style="text-align:center;">
+    <h1 style="font-size: 3rem; color: var(--primary-blue); margin-top: 15vh;">YALLA RIDE</h1>
+    <p>منصة الدراجين المحترفة</p>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    let users = JSON.parse(localStorage.getItem('yalla_ride_db')) || [];
-    let currentUser = JSON.parse(sessionStorage.getItem('active_session')) || null;
+    // --- إعدادات المطور الخاصة ---
+    const ADMIN_EMAIL = "dev@yallaride.com"; // غير هذا لبريدك الخاص
+    const ADMIN_PASS = "Dev2026";           // غير هذا لكلمة سر قوية
+
+    let users = JSON.parse(localStorage.getItem('yalla_db_final')) || [];
+    let currentUser = JSON.parse(sessionStorage.getItem('yalla_session')) || null;
     let isRegisterMode = false;
 
-    function showPage(pageId) {
+    function showPage(pId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-        const activeLink = document.getElementById('link-' + pageId);
-        if(activeLink) activeLink.classList.add('active');
-
-        if(pageId === 'leaderboard') renderLeaderboard();
-        if(pageId === 'profile') renderProfile();
-        window.scrollTo(0,0);
+        document.getElementById(pId).classList.add('active');
+        if(pId === 'leaderboard') renderLeaderboard();
+        if(pId === 'admin') renderAdmin();
+        if(pId === 'profile') renderProfile();
     }
 
     function toggleAuthMode() {
         isRegisterMode = !isRegisterMode;
         document.getElementById('auth-title').innerText = isRegisterMode ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
-        document.getElementById('auth-btn').innerText = isRegisterMode ? 'إنشاء الحساب' : 'دخول';
-        document.getElementById('toggle-btn').innerText = isRegisterMode ? 'لديك حساب؟ سجل هنا' : 'ليس لديك حساب؟ سجل هنا';
-        document.getElementById('register-fields').classList.toggle('hidden');
+        document.getElementById('reg-name').classList.toggle('hidden', !isRegisterMode);
+        document.getElementById('toggle-text').innerText = isRegisterMode ? 'لديك حساب؟ سجل دخول' : 'ليس لديك حساب؟ سجل هنا';
     }
 
     function handleAuth() {
@@ -192,82 +144,122 @@
         const pass = document.getElementById('auth-pass').value;
         const name = document.getElementById('reg-name').value;
 
-        if(!email || !pass) return showToast("يرجى ملء كافة الحقول");
+        // التحقق إذا كان الداخل هو المطور
+        if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+            currentUser = { name: "المطور الرئيسي", email: ADMIN_EMAIL, km: 0, isAdmin: true };
+            sessionStorage.setItem('yalla_session', JSON.stringify(currentUser));
+            updateNav();
+            showPage('admin');
+            notify("مرحباً أيها المطور! تم الدخول بنجاح.");
+            return;
+        }
 
         if(isRegisterMode) {
-            if(!name) return showToast("يرجى إدخال اسمك");
-            if(users.find(u => u.email === email)) return showToast("البريد مسجل مسبقاً");
-            users.push({ name, email, pass, distance: 0 });
+            if(!name || !email || !pass) return notify("يرجى إكمال البيانات");
+            users.push({ name, email, pass, km: 0, pic: '', isAdmin: false });
             saveDB();
-            showToast("تم إنشاء الحساب بنجاح!");
+            notify("تم التسجيل! يمكنك الدخول الآن");
             toggleAuthMode();
         } else {
             const user = users.find(u => u.email === email && u.pass === pass);
             if(user) {
                 currentUser = user;
-                sessionStorage.setItem('active_session', JSON.stringify(currentUser));
+                sessionStorage.setItem('yalla_session', JSON.stringify(currentUser));
                 updateNav();
                 showPage('profile');
             } else {
-                showToast("خطأ في البيانات أو كود الحماية");
+                notify("خطأ في البريد أو كلمة المرور");
             }
         }
     }
 
-    function logout() {
-        currentUser = null;
-        sessionStorage.removeItem('active_session');
-        updateNav();
-        showPage('home');
+    function renderAdmin() {
+        if(!currentUser || currentUser.email !== ADMIN_EMAIL) return showPage('home');
+        const q = document.getElementById('search-member').value.toLowerCase();
+        const results = document.getElementById('admin-results');
+        
+        results.innerHTML = users.filter(u => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q))
+            .map(u => {
+                const idx = users.findIndex(realU => realU.email === u.email);
+                return `
+                <div class="admin-item">
+                    <div style="text-align:right;">
+                        <small>${u.email}</small><br><b>${u.name}</b>
+                    </div>
+                    <div style="display:flex; gap:5px;">
+                        <input type="number" id="adm-km-${idx}" value="${u.km}" style="width:70px; margin:0; padding:5px;">
+                        <button onclick="updateKm(${idx})" style="width:50px; margin:0; padding:5px; font-size:0.7rem;">حفظ</button>
+                    </div>
+                </div>`;
+            }).join('');
     }
 
-    function addDistance() {
-        const val = parseFloat(document.getElementById('new-ride-val').value);
-        if(val > 0) {
-            currentUser.distance += val;
-            const idx = users.findIndex(u => u.email === currentUser.email);
-            users[idx].distance = currentUser.distance;
+    function updateKm(idx) {
+        users[idx].km = parseFloat(document.getElementById(`adm-km-${idx}`).value);
+        saveDB();
+        notify("تم التحديث بنجاح");
+        renderAdmin();
+    }
+
+    function downloadBackup() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(users));
+        const dl = document.createElement('a');
+        dl.setAttribute("href", dataStr);
+        dl.setAttribute("download", "yalla_ride_db.json");
+        dl.click();
+    }
+
+    function restoreBackup(input) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            users = JSON.parse(e.target.result);
             saveDB();
-            sessionStorage.setItem('active_session', JSON.stringify(currentUser));
-            renderProfile();
-            document.getElementById('new-ride-val').value = '';
-            showToast(`تم تسجيل ${val} كم بنجاح`);
-        }
-    }
-
-    function renderLeaderboard() {
-        const sorted = [...users].sort((a,b) => b.distance - a.distance).slice(0, 10);
-        const container = document.getElementById('leader-rows');
-        container.innerHTML = sorted.map((u, i) => `
-            <tr class="${i < 3 ? 'top-rank' : ''}">
-                <td>${i+1}</td>
-                <td>${u.name}</td>
-                <td>${u.distance} كم</td>
-            </tr>
-        `).join('');
-    }
-
-    function renderProfile() {
-        if(!currentUser) return showPage('login');
-        document.getElementById('user-fullname').innerText = currentUser.name;
-        document.getElementById('user-total-dist').innerText = currentUser.distance;
+            notify("تمت الاستعادة!");
+            renderAdmin();
+        };
+        reader.readAsText(input.files[0]);
     }
 
     function updateNav() {
         document.getElementById('nav-profile').classList.toggle('hidden', !currentUser);
         document.getElementById('nav-login').classList.toggle('hidden', !!currentUser);
+        document.getElementById('nav-admin').classList.toggle('hidden', !currentUser || currentUser.email !== ADMIN_EMAIL);
     }
 
-    function saveDB() { localStorage.setItem('yalla_ride_db', JSON.stringify(users)); }
+    function logout() {
+        currentUser = null;
+        sessionStorage.clear();
+        updateNav();
+        showPage('login');
+    }
 
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg; t.style.display = 'block';
+    function renderLeaderboard() {
+        const container = document.getElementById('leaderboard-list');
+        container.innerHTML = users.sort((a,b) => b.km - a.km).map((u, i) => `
+            <div class="admin-item">
+                <span>#${i+1} ${u.name}</span>
+                <b style="color:var(--primary-blue)">${u.km} كم</b>
+            </div>`).join('');
+    }
+
+    function renderProfile() {
+        document.getElementById('display-name').innerText = currentUser.name;
+        document.getElementById('display-km').innerText = currentUser.km;
+    }
+
+    function saveDB() { localStorage.setItem('yalla_db_final', JSON.stringify(users)); }
+    function notify(m) {
+        const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 3000);
     }
 
+    // تهيئة حالة الدخول عند فتح الصفحة
     updateNav();
+    if(currentUser) {
+        if(currentUser.email === ADMIN_EMAIL) showPage('admin');
+        else showPage('profile');
+    }
 </script>
-
 </body>
 </html>
+
