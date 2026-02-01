@@ -21,16 +21,19 @@
         /* Navigation */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; background: var(--nav-bg); height: 70px;
+            padding: 0 5%; background: var(--nav-bg); height: 80px;
             position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid var(--primary-blue);
         }
-        .logo { font-size: 22px; font-weight: 900; color: var(--primary-blue); cursor: pointer; }
+        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .main-logo { height: 50px; width: auto; border-radius: 8px; }
+        .logo-text { font-size: 22px; font-weight: 900; color: var(--primary-blue); }
+
         .nav-links { display: flex; gap: 15px; list-style: none; }
         .nav-links li a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .nav-links li a:hover, .nav-links li a.active { color: var(--primary-blue); }
 
         /* Page Layout */
-        .page { display: none; padding: 40px 5%; min-height: calc(100vh - 70px); animation: fadeIn 0.3s ease-in-out; }
+        .page { display: none; padding: 40px 5%; min-height: calc(100vh - 80px); animation: fadeIn 0.3s ease-in-out; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -57,12 +60,17 @@
 
         /* Toast Notification */
         #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary-blue); color: black; padding: 12px 25px; border-radius: 50px; font-weight: bold; display: none; z-index: 2000; }
+        
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo" onclick="showPage('home')">YALLA RIDE</div>
+    <div class="logo-container" onclick="showPage('home')">
+        <img src="IMG_0660.PNG" alt="YALLA RIDE LOGO" class="main-logo" onerror="this.style.display='none'">
+        <span class="logo-text">YALLA RIDE</span>
+    </div>
     <ul class="nav-links">
         <li><a onclick="showPage('home')" id="link-home">الرئيسية</a></li>
         <li><a onclick="showPage('leaderboard')">المتصدرون</a></li>
@@ -96,7 +104,7 @@
                 <input type="email" id="auth-email" placeholder="name@example.com">
             </div>
             <div class="input-group">
-                <label>كلمة المرور</label>
+                <label>كلمة المرور (كود الحماية)</label>
                 <input type="password" id="auth-pass" placeholder="••••••••">
             </div>
             <button onclick="handleAuth()" id="auth-btn">دخول</button>
@@ -135,8 +143,7 @@
                         <th>المسافة</th>
                     </tr>
                 </thead>
-                <tbody id="leader-rows">
-                    </tbody>
+                <tbody id="leader-rows"></tbody>
             </table>
         </div>
     </div>
@@ -150,28 +157,19 @@
             <p>المسافة: 35 كم | التوقيت: الجمعة 6:00 ص</p>
             <button class="secondary-btn" onclick="showToast('تم إرسال تنبيه لك قبل الموعد!')">تنبيهي بالجولة</button>
         </div>
-        <div class="card">
-            <h3 style="color: var(--primary-blue);">تحدي المرتفعات</h3>
-            <p>المسافة: 15 كم | التوقيت: الثلاثاء 8:00 م</p>
-            <button class="secondary-btn" onclick="showToast('تمت الإضافة لجدولك!')">سأشارك</button>
-        </div>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    // --- نظام التخزين والبيانات ---
     let users = JSON.parse(localStorage.getItem('yalla_ride_db')) || [];
     let currentUser = JSON.parse(sessionStorage.getItem('active_session')) || null;
     let isRegisterMode = false;
 
-    // --- نظام التنقل بين الواجهات ---
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
-        
-        // تحديث الروابط في النافبار
         document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
         const activeLink = document.getElementById('link-' + pageId);
         if(activeLink) activeLink.classList.add('active');
@@ -181,12 +179,11 @@
         window.scrollTo(0,0);
     }
 
-    // --- نظام الحماية والتوثيق ---
     function toggleAuthMode() {
         isRegisterMode = !isRegisterMode;
         document.getElementById('auth-title').innerText = isRegisterMode ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
         document.getElementById('auth-btn').innerText = isRegisterMode ? 'إنشاء الحساب' : 'دخول';
-        document.getElementById('toggle-btn').innerText = isRegisterMode ? 'لديك حساب؟ سجل دخول' : 'ليس لديك حساب؟ سجل هنا';
+        document.getElementById('toggle-btn').innerText = isRegisterMode ? 'لديك حساب؟ سجل هنا' : 'ليس لديك حساب؟ سجل هنا';
         document.getElementById('register-fields').classList.toggle('hidden');
     }
 
@@ -200,9 +197,7 @@
         if(isRegisterMode) {
             if(!name) return showToast("يرجى إدخال اسمك");
             if(users.find(u => u.email === email)) return showToast("البريد مسجل مسبقاً");
-            
-            const newUser = { name, email, pass, distance: 0 };
-            users.push(newUser);
+            users.push({ name, email, pass, distance: 0 });
             saveDB();
             showToast("تم إنشاء الحساب بنجاح!");
             toggleAuthMode();
@@ -213,9 +208,8 @@
                 sessionStorage.setItem('active_session', JSON.stringify(currentUser));
                 updateNav();
                 showPage('profile');
-                showToast(`مرحباً بك، ${user.name}`);
             } else {
-                showToast("البريد أو كلمة المرور غير صحيحة");
+                showToast("خطأ في البيانات أو كود الحماية");
             }
         }
     }
@@ -225,40 +219,32 @@
         sessionStorage.removeItem('active_session');
         updateNav();
         showPage('home');
-        showToast("تم تسجيل الخروج");
     }
 
-    // --- إدارة البيانات ---
     function addDistance() {
         const val = parseFloat(document.getElementById('new-ride-val').value);
         if(val > 0) {
             currentUser.distance += val;
-            // تحديث في قاعدة البيانات الكبيرة
             const idx = users.findIndex(u => u.email === currentUser.email);
             users[idx].distance = currentUser.distance;
-            
             saveDB();
             sessionStorage.setItem('active_session', JSON.stringify(currentUser));
             renderProfile();
             document.getElementById('new-ride-val').value = '';
-            showToast(`أحسنت! أضفت ${val} كم`);
+            showToast(`تم تسجيل ${val} كم بنجاح`);
         }
     }
 
     function renderLeaderboard() {
         const sorted = [...users].sort((a,b) => b.distance - a.distance).slice(0, 10);
         const container = document.getElementById('leader-rows');
-        container.innerHTML = '';
-        
-        sorted.forEach((u, i) => {
-            container.innerHTML += `
-                <tr class="${i < 3 ? 'top-rank' : ''}">
-                    <td>${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i+1}</td>
-                    <td>${u.name}</td>
-                    <td>${u.distance} كم</td>
-                </tr>
-            `;
-        });
+        container.innerHTML = sorted.map((u, i) => `
+            <tr class="${i < 3 ? 'top-rank' : ''}">
+                <td>${i+1}</td>
+                <td>${u.name}</td>
+                <td>${u.distance} كم</td>
+            </tr>
+        `).join('');
     }
 
     function renderProfile() {
@@ -268,27 +254,18 @@
     }
 
     function updateNav() {
-        if(currentUser) {
-            document.getElementById('nav-profile').classList.remove('hidden');
-            document.getElementById('nav-login').classList.add('hidden');
-        } else {
-            document.getElementById('nav-profile').classList.add('hidden');
-            document.getElementById('nav-login').classList.remove('hidden');
-        }
+        document.getElementById('nav-profile').classList.toggle('hidden', !currentUser);
+        document.getElementById('nav-login').classList.toggle('hidden', !!currentUser);
     }
 
-    function saveDB() {
-        localStorage.setItem('yalla_ride_db', JSON.stringify(users));
-    }
+    function saveDB() { localStorage.setItem('yalla_ride_db', JSON.stringify(users)); }
 
     function showToast(msg) {
         const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.style.display = 'block';
+        t.innerText = msg; t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 3000);
     }
 
-    // تهيئة عند الفتح
     updateNav();
 </script>
 
