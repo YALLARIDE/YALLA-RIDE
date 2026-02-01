@@ -1,266 +1,242 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YALLA RIDE | Ultimate Team Portal</title>
-    
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <title>YALLA RIDE | الاحترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --sky-blue: #00d4ff;
-            --bg-dark: #080a0f;
-            --card-bg: rgba(22, 27, 34, 0.9);
-            --transition: 0.3s ease;
+            --primary-blue: #00d2ff;
+            --dark-bg: #0f1214;
+            --card-bg: #1a1f24;
+            --text-color: #ffffff;
+            --accent-color: #2c343a;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-dark); color: white; font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--dark-bg); color: var(--text-color); line-height: 1.6; }
 
         /* Navigation */
-        nav { position: fixed; top: 0; width: 100%; padding: 20px 10%; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 10, 15, 0.9); z-index: 1000; backdrop-filter: blur(10px); border-bottom: 1px solid #1f262e; }
-        .logo { IMG_0660.PNG; }
-        .nav-links { display: flex; gap: 20px; list-style: none; }
-        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; transition: var(--transition); }
-        .nav-links a:hover { color: var(--sky-blue); }
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: rgba(0, 0, 0, 0.9);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--primary-blue);
+        }
+        .logo { font-size: 26px; font-weight: 900; color: var(--primary-blue); text-decoration: none; }
 
-        /* Hero */
-        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(8,10,15,0.6), var(--bg-dark)), url('https://images.unsplash.com/photo-1474135980689-e24f4e706918?q=80&w=2000'); background-size: cover; background-position: center; }
-        .hero h1 { font-size: clamp(3rem, 10vw, 5rem); text-transform: uppercase; letter-spacing: 10px; }
-
-        /* Common Styles */
-        .section { padding: 80px 10%; text-align: center; }
-        .section-title { font-size: 2.5rem; margin-bottom: 50px; text-transform: uppercase; }
-        .section-title span { color: var(--sky-blue); }
-        .sports-card { background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid #30363d; margin: 0 auto; transition: var(--transition); position: relative; }
-
-        /* Auth Modal */
-        .auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 10, 15, 0.95); display: none; justify-content: center; align-items: center; z-index: 2000; }
-        .auth-card { width: 90%; max-width: 400px; border: 1px solid var(--sky-blue); }
-        input { width: 100%; padding: 12px; background: #0d1117; border: 1px solid #30363d; color: white; border-radius: 8px; margin-bottom: 15px; }
-
-        /* Tracker */
-        .progress-track { height: 20px; background: #21262d; transform: skewX(-15deg); margin: 25px 0; border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: var(--sky-blue); transition: 0.5s ease; box-shadow: 0 0 15px var(--sky-blue); }
-        input[type="range"] { width: 100%; accent-color: var(--sky-blue); cursor: pointer; }
-
-        /* Leaderboard Table */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left; }
-        th { color: var(--sky-blue); padding: 15px; border-bottom: 1px solid #30363d; font-size: 0.8rem; text-transform: uppercase; }
-        td { padding: 15px; border-bottom: 1px solid #1f262e; font-size: 0.9rem; }
-
-        .btn-main { padding: 15px 40px; background: var(--sky-blue); color: black; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: var(--transition); text-transform: uppercase; }
-        .btn-main:hover { box-shadow: 0 0 30px var(--sky-blue); transform: translateY(-3px); }
+        /* Hero & Timer Section */
+        .hero {
+            height: 60vh; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), var(--dark-bg)), 
+                        url('https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center;
+        }
+        .hero h1 { font-size: 3.5rem; color: var(--primary-blue); text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
         
-        footer { padding: 40px; text-align: center; color: #8b949e; font-size: 0.8rem; border-top: 1px solid #1f262e; }
+        /* Countdown Timer Style */
+        .timer-container {
+            background: rgba(0, 210, 255, 0.1); padding: 20px; border-radius: 15px;
+            backdrop-filter: blur(5px); border: 1px solid var(--primary-blue); margin-top: 20px;
+        }
+        #countdown { display: flex; gap: 20px; font-size: 1.5rem; font-weight: bold; }
+        .time-box { display: flex; flex-direction: column; min-width: 60px; }
+        .time-label { font-size: 0.8rem; color: var(--primary-blue); }
+
+        /* Main Content */
+        .container { padding: 30px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
+
+        .card { background: var(--card-bg); border-radius: 15px; padding: 20px; border: 1px solid #222; position: relative; overflow: hidden; }
+        .card::before { content: ""; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--primary-blue); }
+
+        h2 { margin-bottom: 15px; color: var(--primary-blue); font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+        
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; font-size: 1rem; }
+        input { background: var(--accent-color); color: white; }
+        button { background: var(--primary-blue); color: #000; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* Map Placeholder */
+        .map-container {
+            width: 100%; height: 250px; background: #222; border-radius: 10px; margin-top: 10px;
+            overflow: hidden; border: 1px solid #333;
+        }
+
+        /* Leaderboard */
+        .leader-row { display: flex; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.05); margin-bottom: 5px; border-radius: 5px; }
+        .rank-1 { border-right: 4px solid gold; color: gold; }
+
+        .notif-toast {
+            position: fixed; bottom: 20px; right: 20px; background: var(--primary-blue);
+            color: black; padding: 15px 25px; border-radius: 10px; font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateY(150%); transition: 0.5s; z-index: 9999;
+        }
+        .notif-toast.show { transform: translateY(0); }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#" class="logo"><i class="fas fa-bicycle"></i> YALLA RIDE</a>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#dashboard">Tracker</a></li>
-            <li><a href="#leaderboard">Leaderboard</a></li>
-            <li id="authLink"><a href="javascript:void(0)" onclick="openAuth()">Login / Join</a></li>
-            <li id="userLink" style="display:none;"><a href="javascript:void(0)" onclick="logout()">Logout</a></li>
-        </ul>
-    </nav>
+<nav>
+    <a href="#" class="logo">YALLA RIDE</a>
+    <div id="auth-controls">
+        <button onclick="openLogin()" style="width: auto; padding: 5px 20px;">تسجيل دخول</button>
+    </div>
+</nav>
 
-    <div id="authModal" class="auth-overlay">
-        <div class="sports-card auth-card">
-            <h2 id="authTitle">RIDER <span>LOGIN</span></h2>
-            <form id="authForm">
-                <input type="email" id="authEmail" placeholder="EMAIL ADDRESS" required>
-                <input type="password" id="authPassword" placeholder="PASSWORD" required>
-                <button type="submit" class="btn-main" style="width: 100%;">START RIDING</button>
-            </form>
-            <p id="toggleAuth" style="margin-top: 15px; cursor: pointer; font-size: 0.8rem; color: #8b949e;">
-                Don't have an account? <span style="color: var(--sky-blue);">Register Here</span>
-            </p>
-            <button onclick="closeAuth()" style="background:none; border:none; color:grey; margin-top:10px; cursor:pointer;">Close</button>
+<div class="hero">
+    <h1>YALLA RIDE</h1>
+    <p style="font-weight: 700; letter-spacing: 3px;">KEEP ROLLING YOUR WHEELS</p>
+    
+    <div class="timer-container">
+        <p style="margin-bottom: 10px;">الجولة القادمة تبدأ خلال:</p>
+        <div id="countdown">
+            <div class="time-box"><span id="days">00</span><span class="time-label">يوم</span></div>
+            <div class="time-box"><span id="hours">00</span><span class="time-label">ساعة</span></div>
+            <div class="time-box"><span id="mins">00</span><span class="time-label">دقيقة</span></div>
         </div>
     </div>
+</div>
 
-    <section class="hero" id="home">
-        <h1>YALLA RIDE</h1>
-        <p>REDEFINING ADVENTURE ON TWO WHEELS</p>
-    </section>
+<div class="container">
+    <div class="column">
+        <section id="login-card" class="card">
+            <h2>🔐 انضم للفريق</h2>
+            <input type="email" id="email-field" placeholder="بريدك الإلكتروني">
+            <button onclick="login()">دخول سريع</button>
+        </section>
 
-    <section class="section" id="dashboard">
-        <h2 class="section-title">Ride <span>Tracker</span></h2>
-        <div class="sports-card" id="captureArea" style="max-width: 450px;">
-            <div id="userDisplay" style="margin-bottom:15px; font-weight: bold; color: var(--sky-blue);">Guest Rider</div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #8b949e;">
-                <span id="label-1">Beginner</span>
-                <span id="label-2">Intermediate</span>
-                <span id="label-3">Advanced</span>
+        <section id="profile-card" class="card hidden">
+            <h2>🚴 ملفك الرياضي</h2>
+            <p>مرحباً: <span id="user-name" style="color:var(--primary-blue)"></span></p>
+            <p>المسافة الإجمالية: <span id="total-km" style="font-weight: bold;">0</span> كم</p>
+            <input type="number" id="ride-input" placeholder="كم كيلومتر قطعت اليوم؟">
+            <button onclick="updateDistance()">تسجيل المسافة</button>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+            <h2>🏆 قائمة الأبطال (Top 3)</h2>
+            <div id="leaderboard"></div>
+        </section>
+    </div>
+
+    <div class="column">
+        <section class="card">
+            <h2>📍 مسار جولة الجمعة</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 10px;">نقطة التجمع: الكورنيش الشمالي - الساعة 5:30 م</p>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115860.9404281781!2d39.1411516!3d21.5434857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3d01fb1137e59%3A0xe059579737b118db!2sJeddah%20Corniche!5e0!3m2!1sen!2ssa!4v1690000000000!5m2!1sen!2ssa" 
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
-            <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div id="levelDisplay" style="font-weight: bold; font-style: italic;">LEVEL</div>
-                <div style="font-size: 2rem;"><span id="kmVal">0</span><small style="font-size: 0.8rem;"> KM</small></div>
-            </div>
-            <input type="range" id="rideSlider" min="0" max="1000" value="0">
-            <p style="font-size:0.7rem; color:grey; margin-top:10px;">Your progress updates the leaderboard in real-time.</p>
-        </div>
-    </section>
+        </section>
 
-    <section class="section" id="leaderboard" style="background: #0d1117;">
-        <h2 class="section-title">Global <span>Leaderboard</span></h2>
-        <div class="sports-card" style="max-width: 600px;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Rider</th>
-                        <th style="text-align: right;">Distance</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboardBody">
-                    </tbody>
-            </table>
-        </div>
-    </section>
+        <section class="card" style="margin-top: 20px;">
+            <h2>🔔 إعلانات الفريق</h2>
+            <ul style="list-style: none; font-size: 0.9rem;">
+                <li style="margin-bottom: 10px;">✅ تم توفير قمصان جديدة للفريق، تواصل مع الإدارة.</li>
+                <li style="margin-bottom: 10px;">⚠️ يرجى التأكد من صيانة الفرامل قبل جولة الأحد.</li>
+            </ul>
+        </section>
+    </div>
+</div>
 
-    <footer>
-        <p>© 2026 YALLA RIDE TEAM • Stay Safe, Wear a Helmet.</p>
-    </footer>
+<div id="toast" class="notif-toast">رسالة تنبيه</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, updateDoc, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+<script>
+    // --- بيانات وهمية أولية ---
+    let members = JSON.parse(localStorage.getItem('ride_members')) || [
+        {name: "كابتن خالد", km: 245},
+        {name: "ياسر الدراج", km: 198},
+        {name: "فهد توربو", km: 185}
+    ];
+    let activeUser = null;
 
-        // --- Firebase Configuration ---
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // UI Helpers
-        const authModal = document.getElementById('authModal');
-        const rideSlider = document.getElementById('rideSlider');
-        let isLoginMode = true;
-
-        window.openAuth = () => authModal.style.display = 'flex';
-        window.closeAuth = () => authModal.style.display = 'none';
-        window.logout = () => signOut(auth);
-
-        document.getElementById('toggleAuth').onclick = () => {
-            isLoginMode = !isLoginMode;
-            document.getElementById('authTitle').innerHTML = isLoginMode ? "RIDER <span>LOGIN</span>" : "NEW <span>RIDER</span>";
-            document.getElementById('toggleAuth').innerHTML = isLoginMode ? "Don't have an account? <span>Register</span>" : "Already a rider? <span>Login</span>";
-        };
-
-        // Badge Logic
-        function getBadge(km) {
-            if (km >= 1000) return '<i class="fas fa-medal" style="color: #ffd700;" title="Gold Rider"></i>';
-            if (km >= 500) return '<i class="fas fa-award" style="color: #c0c0c0;" title="Silver Rider"></i>';
-            if (km >= 100) return '<i class="fas fa-certificate" style="color: #cd7f32;" title="Bronze Rider"></i>';
-            return '';
+    // --- نظام تسجيل الدخول ---
+    function login() {
+        const email = document.getElementById('email-field').value;
+        if(!email.includes('@')) return alert("يرجى إدخال بريد إلكتروني صحيح");
+        
+        activeUser = members.find(m => m.email === email);
+        if(!activeUser) {
+            activeUser = { email: email, name: email.split('@')[0], km: 0 };
+            members.push(activeUser);
         }
+        saveData();
+        renderUI();
+        notify("أهلاً بك في الفريق! ابدأ التسجيل الآن.");
+    }
 
-        // Auth Form Submission
-        document.getElementById('authForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-
-            try {
-                if (isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, password);
-                } else {
-                    const res = await createUserWithEmailAndPassword(auth, email, password);
-                    await setDoc(doc(db, "riders", res.user.uid), { totalKm: 0, email: email });
-                }
-                closeAuth();
-            } catch (err) { alert(err.message); }
-        };
-
-        // Track User Session & Sync
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('authLink').style.display = 'none';
-                document.getElementById('userLink').style.display = 'block';
-                document.getElementById('userDisplay').innerText = `Welcome, ${user.email.split('@')[0]}`;
-                
-                onSnapshot(doc(db, "riders", user.uid), (snap) => {
-                    if (snap.exists()) updateUI(snap.data().totalKm);
-                });
-            } else {
-                document.getElementById('authLink').style.display = 'block';
-                document.getElementById('userLink').style.display = 'none';
-                document.getElementById('userDisplay').innerText = "Guest Rider";
-                updateUI(0);
-            }
+    function renderUI() {
+        if(activeUser) {
+            document.getElementById('login-card').classList.add('hidden');
+            document.getElementById('profile-card').classList.remove('hidden');
+            document.getElementById('user-name').innerText = activeUser.name;
+            document.getElementById('total-km').innerText = activeUser.km;
+            document.getElementById('auth-controls').innerHTML = `<span style="color:var(--primary-blue)">● متصل الآن</span>`;
+        }
+        
+        // ترتيب قائمة الأبطال
+        const top3 = [...members].sort((a,b) => b.km - a.km).slice(0, 3);
+        const lbContainer = document.getElementById('leaderboard');
+        lbContainer.innerHTML = '';
+        top3.forEach((m, i) => {
+            lbContainer.innerHTML += `
+                <div class="leader-row ${i === 0 ? 'rank-1' : ''}">
+                    <span>${i+1}. ${m.name}</span>
+                    <span>${m.km} كم</span>
+                </div>
+            `;
         });
+    }
 
-        // Global Leaderboard
-        function syncLeaderboard() {
-            const q = query(collection(db, "riders"), orderBy("totalKm", "desc"), limit(10));
-            onSnapshot(q, (snap) => {
-                const tbody = document.getElementById('leaderboardBody');
-                tbody.innerHTML = "";
-                snap.docs.forEach((doc, i) => {
-                    const data = doc.data();
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>#${i+1}</td>
-                            <td style="display:flex; align-items:center; gap:10px;">
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.email}" style="width:25px; border-radius:50%">
-                                ${data.email.split('@')[0]} ${getBadge(data.totalKm)}
-                            </td>
-                            <td style="text-align:right; color:var(--sky-blue); font-weight:bold;">${data.totalKm} KM</td>
-                        </tr>
-                    `;
-                });
-            });
+    function updateDistance() {
+        const val = parseFloat(document.getElementById('ride-input').value);
+        if(val > 0) {
+            activeUser.km += val;
+            saveData();
+            renderUI();
+            document.getElementById('ride-input').value = '';
+            notify(`رائع! تم إضافة ${val} كم إلى سجلك.`);
         }
-        syncLeaderboard();
+    }
 
-        // Update UI
-        function updateUI(val) {
-            const fill = document.getElementById('fill');
-            const kmVal = document.getElementById('kmVal');
-            const levelDisplay = document.getElementById('levelDisplay');
-            const labels = [document.getElementById('label-1'), document.getElementById('label-2'), document.getElementById('label-3')];
+    function saveData() {
+        localStorage.setItem('ride_members', JSON.stringify(members));
+    }
+
+    // --- نظام الإشعارات ---
+    function notify(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // --- المؤقت التنازلي ---
+    function startTimer() {
+        // تحديد موعد جولة تخيلية بعد 3 أيام
+        const eventDate = new Date().getTime() + (3 * 24 * 60 * 60 * 1000);
+        
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = eventDate - now;
             
-            rideSlider.value = val;
-            fill.style.width = (val / 10) + '%'; // Scale 1000km to 100%
-            kmVal.innerText = val;
+            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        }, 1000);
+    }
 
-            let color = "#00d4ff"; let text = "BEGINNER"; let idx = 0;
-            if (val >= 100 && val < 500) { color = "#ffd700"; text = "INTERMEDIATE"; idx = 1; }
-            else if (val >= 500) { color = "#ff0077"; text = "ADVANCED"; idx = 2; }
+    // تشغيل عند التحميل
+    window.onload = () => {
+        renderUI();
+        startTimer();
+        setTimeout(() => notify("تذكير: جولة الجمعة تنطلق من الكورنيش!"), 3000);
+    };
+</script>
 
-            levelDisplay.innerHTML = `${text} ${getBadge(val)}`;
-            levelDisplay.style.color = color;
-            fill.style.background = color;
-            fill.style.boxShadow = `0 0 15px ${color}`;
-            labels.forEach((l, i) => l.style.color = i === idx ? color : "#8b949e");
-        }
-
-        // Save Slider change to Firebase
-        rideSlider.addEventListener('change', async (e) => {
-            const user = auth.currentUser;
-            if (user) {
-                await updateDoc(doc(db, "riders", user.uid), { totalKm: parseInt(e.target.value) });
-            } else {
-                openAuth();
-            }
-        });
-    </script>
 </body>
 </html>
