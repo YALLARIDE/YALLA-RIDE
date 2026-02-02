@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YALLA RIDE | Official</title>
+    <title>YALLA RIDE | Admin Control</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -16,6 +16,7 @@
             --gold: #ffcf33;
             --danger: #ff4d4d;
             --text: #ffffff;
+            --success: #2ecc71;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
@@ -28,48 +29,47 @@
             position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333;
         }
         .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .main-logo { height: 55px; width: 55px; object-fit: contain; } /* ضبط حجم اللوجو */
+        .main-logo { height: 55px; width: 55px; object-fit: contain; }
         .brand-name { font-weight: 900; color: var(--primary); font-size: 1.2rem; }
         
         .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
         .nav-links li a { color: #aaa; text-decoration: none; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
         .nav-links li a:hover { color: var(--primary); }
 
-        /* Notification Badge */
-        .notif-wrapper { position: relative; }
-        .notif-badge { 
-            position: absolute; top: -5px; right: -8px; 
-            background: var(--danger); color: white; 
-            width: 18px; height: 18px; border-radius: 50%; 
-            font-size: 0.65rem; display: none; align-items: center; 
-            justify-content: center; font-weight: bold; border: 2px solid var(--nav);
-        }
-        .ring { animation: ring-animation 2s infinite; color: var(--gold) !important; }
-        @keyframes ring-animation {
-            0% { transform: rotate(0); } 10% { transform: rotate(15deg); } 20% { transform: rotate(-15deg); } 0% { transform: rotate(0); }
-        }
-
         /* Pages */
         .page { display: none; padding: 30px 5%; animation: slideUp 0.4s ease-out; }
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .container { max-width: 550px; margin: auto; }
+        .container { max-width: 600px; margin: auto; }
         .card { background: var(--card); border-radius: 25px; padding: 30px; border: 1px solid #222; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 
-        /* Profile Image Styling */
-        .profile-img-box { position: relative; width: 140px; height: 140px; margin: 0 auto 20px; }
-        .profile-img-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); background: #222; }
-        .camera-icon { position: absolute; bottom: 5px; right: 5px; background: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid var(--card); color: black; }
-
-        /* Buttons & Inputs */
-        button { width: 100%; padding: 14px; margin-top: 15px; border-radius: 12px; border: none; background: var(--primary); color: #000; font-weight: 900; cursor: pointer; transition: 0.3s; }
-        button:hover { transform: scale(1.02); filter: brightness(1.1); }
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; background: #1e252b; border: 1px solid #333; color: white; outline: none; }
+        /* Admin Management List */
+        .user-manage-card {
+            background: #1a1f24;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+        .user-info-row { display: flex; align-items: center; margin-bottom: 10px; gap: 10px; }
+        .manage-actions { display: flex; gap: 8px; flex-wrap: wrap; }
         
-        .ride-card { background: #1e252b; border-radius: 20px; padding: 20px; margin-bottom: 15px; border-right: 5px solid var(--primary); }
-        .admin-item { display: flex; justify-content: space-between; align-items: center; background: #1a1f24; padding: 15px; border-radius: 15px; margin-bottom: 10px; }
-        .mini-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-left: 10px; border: 2px solid var(--primary); }
+        .admin-input { 
+            background: #0b0e11 !important; 
+            border: 1px solid #444 !important; 
+            padding: 8px 12px !important; 
+            margin: 5px 0 !important;
+            font-size: 0.9rem;
+        }
+
+        /* Buttons */
+        button { width: 100%; padding: 14px; margin-top: 15px; border-radius: 12px; border: none; background: var(--primary); color: #000; font-weight: 900; cursor: pointer; transition: 0.3s; }
+        .btn-save { background: var(--success); color: white; width: auto; padding: 8px 15px; margin: 0; font-size: 0.8rem; }
+        .btn-delete { background: var(--danger); color: white; width: auto; padding: 8px 15px; margin: 0; font-size: 0.8rem; }
+        
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; background: #1e252b; border: 1px solid #333; color: white; outline: none; }
+        .mini-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
 
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--primary); color: black; padding: 12px 30px; border-radius: 50px; display: none; z-index: 9999; font-weight: bold; }
         .hidden { display: none !important; }
@@ -77,20 +77,13 @@
 </head>
 <body>
 
-<audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
-
 <nav>
     <div class="logo-container" onclick="showPage('home')">
         <img src="IMG_0660.PNG" alt="Logo" class="main-logo" onerror="this.src='https://via.placeholder.com/55/222222/00d2ff?text=Y'">
         <span class="brand-name">YALLA RIDE</span>
     </div>
-    
     <ul class="nav-links">
         <li><a onclick="showPage('home')"><i class="fa-solid fa-house"></i></a></li>
-        <li class="notif-wrapper" onclick="showPage('rides')">
-            <i class="fa-solid fa-bell" id="bell-icon"></i>
-            <div id="notif-count" class="notif-badge">0</div>
-        </li>
         <li><a onclick="showPage('leaderboard')"><i class="fa-solid fa-ranking-star"></i></a></li>
         <li id="nav-admin" class="hidden"><a onclick="showPage('admin')"><i class="fa-solid fa-user-gear" style="color:var(--gold)"></i></a></li>
         <li id="nav-profile" class="hidden"><a onclick="showPage('profile')"><i class="fa-solid fa-circle-user"></i></a></li>
@@ -98,69 +91,50 @@
     </ul>
 </nav>
 
+<div id="admin" class="page">
+    <div class="container">
+        <div class="card">
+            <h3><i class="fa-solid fa-users-gear" style="color:var(--primary)"></i> لوحة تحكم المطور</h3>
+            <p style="color:#888; font-size:0.8rem; margin-bottom:20px;">يمكنك تعديل بيانات الأعضاء أو حذفهم نهائياً.</p>
+            <div id="admin-user-list">
+                </div>
+        </div>
+    </div>
+</div>
+
 <div id="home" class="page active" style="text-align:center;">
     <div style="margin-top: 15vh;">
         <img src="IMG_0660.PNG" style="width: 150px; margin-bottom: 20px;" onerror="this.style.display='none'">
         <h1 style="font-size: 3.5rem; font-weight: 900;">YALLA RIDE</h1>
-        <p style="color:var(--gold); letter-spacing: 4px; font-weight: bold;">KEEP ROLLING YOUR WHEELS</p>
-        <button onclick="showPage('rides')" style="width: 220px; margin-top: 40px; background: transparent; border: 2px solid var(--primary); color: var(--primary);">استكشف الجولات</button>
-    </div>
-</div>
-
-<div id="profile" class="page">
-    <div class="container card" style="text-align:center;">
-        <div class="profile-img-box">
-            <img id="user-pic" src="https://via.placeholder.com/140/222222/00d2ff?text=User" alt="Profile">
-            <label for="img-upload" class="camera-icon">
-                <i class="fa-solid fa-camera"></i>
-            </label>
-            <input type="file" id="img-upload" hidden accept="image/*" onchange="uploadPhoto(this)">
-        </div>
-        <h2 id="display-name">المستخدم</h2>
-        <div id="user-badges" style="margin-top: 5px;"></div>
-        
-        <div style="background:#1a1f24; padding:25px; border-radius:20px; margin:25px 0;">
-            <p style="color:#888;">إجمالي المسافة المقطوعة</p>
-            <h1 style="color:var(--primary); font-size: 3rem;"><span id="display-km">0</span> <small style="font-size: 1rem;">كم</small></h1>
-        </div>
-        <button onclick="logout()" style="background:var(--danger); color:white;"><i class="fa-solid fa-power-off"></i> تسجيل الخروج</button>
-    </div>
-</div>
-
-<div id="rides" class="page">
-    <div class="container">
-        <h2 style="text-align:center; margin-bottom:20px;"><i class="fa-solid fa-route"></i> الجولات القادمة</h2>
-        <div id="rides-list"></div>
+        <p style="color:var(--gold); font-weight: bold;">KEEP ROLLING YOUR WHEELS</p>
+        <button onclick="showPage('leaderboard')" style="width: 220px; margin-top: 40px;">لوحة المتصدرين</button>
     </div>
 </div>
 
 <div id="leaderboard" class="page">
     <div class="container card">
-        <h2 style="text-align:center; margin-bottom:20px;"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> قائمة الأبطال</h2>
+        <h2 style="text-align:center; margin-bottom:20px;"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> الأبطال</h2>
         <div id="leaderboard-list"></div>
     </div>
 </div>
 
-<div id="admin" class="page">
-    <div class="container card">
-        <h3>📢 نشر جولة جديدة</h3>
-        <input type="text" id="ride-title" placeholder="عنوان الجولة">
-        <input type="text" id="ride-info" placeholder="الوقت ونقطة التجمع">
-        <button onclick="addRide()"><i class="fa-solid fa-paper-plane"></i> نشر الإعلان</button>
-        <hr style="margin:25px 0; border:0.5px solid #333;">
-        <h3>👥 إدارة الكيلومترات</h3>
-        <div id="admin-results"></div>
+<div id="profile" class="page">
+    <div class="container card" style="text-align:center;">
+        <img id="user-pic" src="https://via.placeholder.com/140" style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solid var(--primary);">
+        <h2 id="display-name" style="margin-top:10px;">المستخدم</h2>
+        <h1 style="color:var(--primary); font-size: 3rem; margin:20px 0;"><span id="display-km">0</span> <small style="font-size:1rem;">كم</small></h1>
+        <button onclick="logout()" style="background:var(--danger); color:white;">خروج</button>
     </div>
 </div>
 
 <div id="login" class="page">
     <div class="container card">
-        <h2 id="auth-title" style="text-align:center;">تسجيل الدخول</h2>
+        <h2 id="auth-title">تسجيل الدخول</h2>
         <input type="text" id="reg-name" class="hidden" placeholder="الاسم الكامل">
         <input type="email" id="auth-email" placeholder="البريد الإلكتروني">
         <input type="password" id="auth-pass" placeholder="كلمة المرور">
-        <button onclick="handleAuth()">استمرار</button>
-        <p onclick="toggleAuth()" style="cursor:pointer; text-align:center; margin-top:15px; color:var(--primary);">ليس لديك حساب؟ اشترك الآن</p>
+        <button onclick="handleAuth()">دخول</button>
+        <p onclick="toggleAuth()" style="cursor:pointer; text-align:center; margin-top:15px; color:var(--primary);">حساب جديد؟</p>
     </div>
 </div>
 
@@ -168,125 +142,76 @@
 
 <script>
     let users = JSON.parse(localStorage.getItem('yalla_final_db')) || [];
-    let rides = JSON.parse(localStorage.getItem('yalla_rides')) || [];
     let currentUser = JSON.parse(sessionStorage.getItem('yalla_session')) || null;
-    let lastSeenCount = parseInt(localStorage.getItem('last_seen')) || 0;
 
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         if(id === 'profile') renderProfile();
         if(id === 'leaderboard') renderLeaderboard();
-        if(id === 'rides') {
-            renderRides();
-            lastSeenCount = rides.length;
-            localStorage.setItem('last_seen', lastSeenCount);
-            updateNotif();
-        }
-        if(id === 'admin') renderAdmin();
+        if(id === 'admin') renderAdminPanel();
     }
 
-    function uploadPhoto(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imageData = e.target.result;
-                document.getElementById('user-pic').src = imageData;
-                currentUser.pic = imageData;
-                sessionStorage.setItem('yalla_session', JSON.stringify(currentUser));
-                const uIndex = users.findIndex(u => u.email === currentUser.email);
-                if(uIndex !== -1) {
-                    users[uIndex].pic = imageData;
-                    localStorage.setItem('yalla_final_db', JSON.stringify(users));
-                }
-                notify("✅ تم تحديث الصورة بنجاح!");
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
+    // --- وظائف المطور (تعديل وحذف) ---
+    function renderAdminPanel() {
+        const adminList = document.getElementById('admin-user-list');
+        adminList.innerHTML = users.map((user, index) => `
+            <div class="user-manage-card">
+                <div class="user-info-row">
+                    <img src="${user.pic || 'https://via.placeholder.com/45/222'}" class="mini-avatar">
+                    <div style="flex-grow:1;">
+                        <input type="text" id="edit-name-${index}" class="admin-input" value="${user.name}">
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input type="number" id="edit-km-${index}" class="admin-input" value="${user.km}" style="width:80px;">
+                            <span style="font-size:0.8rem; color:#888;">كم</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="manage-actions">
+                    <button class="btn-save" onclick="updateUser(${index})"><i class="fa-solid fa-floppy-disk"></i> حفظ</button>
+                    <button class="btn-delete" onclick="deleteUser(${index})"><i class="fa-solid fa-trash"></i> حذف</button>
+                </div>
+            </div>
+        `).join('');
     }
 
-    function renderProfile() {
-        if(!currentUser) return;
-        document.getElementById('display-name').innerText = currentUser.name;
-        document.getElementById('display-km').innerText = currentUser.km || 0;
-        document.getElementById('user-badges').innerHTML = getBadges(currentUser.km || 0);
-        if(currentUser.pic) document.getElementById('user-pic').src = currentUser.pic;
+    function updateUser(index) {
+        const newName = document.getElementById(`edit-name-${index}`).value;
+        const newKm = parseFloat(document.getElementById(`edit-km-${index}`).value) || 0;
+
+        if(!newName) return notify("الاسم لا يمكن أن يكون فارغاً");
+
+        users[index].name = newName;
+        users[index].km = newKm;
+        
+        localStorage.setItem('yalla_final_db', JSON.stringify(users));
+        notify("✅ تم تحديث بيانات " + newName);
+        renderLeaderboard();
     }
 
-    function updateNotif() {
-        const count = rides.length - lastSeenCount;
-        const badge = document.getElementById('notif-count');
-        const bell = document.getElementById('bell-icon');
-        if(count > 0) {
-            badge.innerText = count;
-            badge.style.display = 'flex';
-            bell.classList.add('ring');
-            if(sessionStorage.getItem('played') != rides.length) {
-                document.getElementById('notif-sound').play().catch(()=>{});
-                sessionStorage.setItem('played', rides.length);
-            }
-        } else {
-            badge.style.display = 'none';
-            bell.classList.remove('ring');
+    function deleteUser(index) {
+        if(confirm("هل أنت متأكد من حذف هذا المستخدم نهائياً؟")) {
+            const userName = users[index].name;
+            users.splice(index, 1);
+            localStorage.setItem('yalla_final_db', JSON.stringify(users));
+            notify("🗑 تم حذف " + userName);
+            renderAdminPanel();
+            renderLeaderboard();
         }
     }
 
-    function getBadges(km) {
-        let h = '';
-        if(km >= 10) h += '<i class="fa-solid fa-medal" style="color:#cd7f32; margin:0 3px;"></i>';
-        if(km >= 50) h += '<i class="fa-solid fa-medal" style="color:#c0c0c0; margin:0 3px;"></i>';
-        if(km >= 100) h += '<i class="fa-solid fa-award" style="color:#ffd700; margin:0 3px;"></i>';
-        if(km >= 250) h += '<i class="fa-solid fa-fire" style="color:#ff4d4d; margin:0 3px;"></i>';
-        return h;
-    }
-
+    // --- الوظائف الأساسية ---
     function renderLeaderboard() {
         const list = document.getElementById('leaderboard-list');
         list.innerHTML = [...users].sort((a,b)=>b.km-a.km).map((u, i) => `
-            <div class="admin-item">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px; border-bottom:1px solid #222;">
                 <div style="display:flex; align-items:center;">
-                    <span style="width:20px; font-weight:bold;">${i+1}</span>
-                    <img src="${u.pic || 'https://via.placeholder.com/45/222'}" class="mini-avatar">
-                    <div><b>${u.name}</b><br>${getBadges(u.km)}</div>
+                    <span style="width:25px; color:var(--gold);">${i+1}</span>
+                    <img src="${u.pic || 'https://via.placeholder.com/40'}" class="mini-avatar" style="width:35px; height:35px;">
+                    <b style="margin-right:10px;">${u.name}</b>
                 </div>
-                <span style="color:var(--primary); font-weight:900;">${u.km} <small>كم</small></span>
+                <span style="color:var(--primary);">${u.km} كم</span>
             </div>`).join('');
-    }
-
-    function renderRides() {
-        document.getElementById('rides-list').innerHTML = rides.length ? rides.map(r => `
-            <div class="ride-card">
-                <small style="color:var(--gold)"><i class="fa-regular fa-clock"></i> ${r.date}</small>
-                <h3 style="color:var(--primary); margin:5px 0;">${r.title}</h3>
-                <p style="color:#ccc; font-size:0.9rem;"><i class="fa-solid fa-location-dot"></i> ${r.info}</p>
-            </div>`).reverse().join('') : '<p style="text-align:center; color:#666;">لا توجد جولات قريبة</p>';
-    }
-
-    function renderAdmin() {
-        document.getElementById('admin-results').innerHTML = users.map((u, idx) => `
-            <div class="admin-item">
-                <span>${u.name}</span>
-                <div style="display:flex; gap:10px;">
-                    <input type="number" id="km-${idx}" value="${u.km}" style="width:70px; margin:0; height:40px;">
-                    <button onclick="saveKm(${idx})" style="width:50px; margin:0; height:40px; padding:0;"><i class="fa-solid fa-check"></i></button>
-                </div>
-            </div>`).join('');
-    }
-
-    function saveKm(idx) {
-        users[idx].km = parseFloat(document.getElementById(`km-${idx}`).value) || 0;
-        localStorage.setItem('yalla_final_db', JSON.stringify(users));
-        notify("✅ تم التحديث");
-    }
-
-    function addRide() {
-        const t = document.getElementById('ride-title').value;
-        const i = document.getElementById('ride-info').value;
-        if(!t || !i) return notify("❌ أكمل البيانات");
-        rides.push({ id: Date.now(), title: t, info: i, date: new Date().toLocaleDateString('ar-SA') });
-        localStorage.setItem('yalla_rides', JSON.stringify(rides));
-        notify("🚀 تم النشر!");
-        updateNotif();
     }
 
     function handleAuth() {
@@ -302,10 +227,9 @@
         }
 
         if(isReg) {
-            if(!n || !e) return notify("بيانات ناقصة");
             users.push({ name: n, email: e, pass: p, km: 0, pic: '' });
             localStorage.setItem('yalla_final_db', JSON.stringify(users));
-            notify("تم التسجيل! سجل دخولك الآن");
+            notify("تم الاشتراك! سجل دخولك");
             toggleAuth();
         } else {
             const user = users.find(u => u.email === e && u.pass === p);
@@ -314,13 +238,18 @@
                 sessionStorage.setItem('yalla_session', JSON.stringify(currentUser));
                 updateNav();
                 showPage('profile');
-            } else notify("خطأ في البيانات");
+            } else notify("بيانات خاطئة");
         }
+    }
+
+    function renderProfile() {
+        document.getElementById('display-name').innerText = currentUser.name;
+        document.getElementById('display-km').innerText = currentUser.km;
+        if(currentUser.pic) document.getElementById('user-pic').src = currentUser.pic;
     }
 
     function toggleAuth() {
         document.getElementById('reg-name').classList.toggle('hidden');
-        document.getElementById('auth-title').innerText = document.getElementById('reg-name').classList.contains('hidden') ? "تسجيل الدخول" : "إنشاء حساب";
     }
 
     function updateNav() {
@@ -333,7 +262,6 @@
     function notify(m) { const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block'; setTimeout(()=>t.style.display='none', 2500); }
 
     updateNav();
-    updateNotif();
 </script>
 </body>
 </html>
