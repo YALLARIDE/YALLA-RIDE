@@ -73,6 +73,10 @@
         input, textarea { width: 100%; padding: 12px; border-radius: 12px; background: #222; border: 1px solid #333; color: white; margin: 10px 0; }
         .hidden { display: none !important; }
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; padding: 10px 25px; border-radius: 50px; display: none; z-index: 9999; }
+
+        /* Dev Mode Tooltip & UI */
+        .dev-badge { background: var(--danger); color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.6rem; margin-right: 5px; vertical-align: middle; }
+        .dev-btn-small { width: auto; padding: 4px 8px; font-size: 0.7rem; margin-right: 5px; background: #333; color: white; }
     </style>
 </head>
 <body>
@@ -200,6 +204,28 @@
     let chatMessages = JSON.parse(localStorage.getItem('yalla_chat')) || [];
     let notifications = JSON.parse(localStorage.getItem('yalla_notis')) || [{text:"مرحباً بك في يلا رايد!", date: new Date().toLocaleString()}];
 
+    // Developer Authority System Functions
+    const devAuth = {
+        isDev: () => currentUser && currentUser.isAdmin && currentUser.email === "dev@yallaride.com",
+        updateKm: (email, amount) => {
+            if(!devAuth.isDev()) return;
+            const idx = users.findIndex(u => u.email === email);
+            if(idx !== -1) {
+                users[idx].km = Math.max(0, (users[idx].km || 0) + amount);
+                localStorage.setItem('yalla_db', JSON.stringify(users));
+                renderLeaderboard();
+                notify("تم تحديث الكيلومترات");
+            }
+        },
+        deleteChat: (index) => {
+            if(!devAuth.isDev()) return;
+            chatMessages.splice(index, 1);
+            localStorage.setItem('yalla_chat', JSON.stringify(chatMessages));
+            renderChat();
+            notify("تم حذف الرسالة");
+        }
+    };
+
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -248,7 +274,7 @@
                 <label for="change-img" class="edit-img-overlay"><i class="fa-solid fa-camera"></i></label>
                 <input type="file" id="change-img" class="hidden" onchange="updateProfileImg(this)">
             </div>
-            <h2>${currentUser.name}</h2><p>${currentUser.email}</p>
+            <h2>${currentUser.name} ${devAuth.isDev() ? '<span class="dev-badge">DEV</span>' : ''}</h2><p>${currentUser.email}</p>
             <div class="card" style="display:inline-block; margin-top:10px;">${currentUser.km} كم</div><br>
             <button onclick="logout()" style="background:var(--danger); color:white; width:150px; margin-top:20px;">خروج</button>
         `;
@@ -257,11 +283,12 @@
     function renderChat() {
         const win = document.getElementById('chat-win');
         document.getElementById('chat-controls').classList.toggle('hidden', !currentUser);
-        win.innerHTML = chatMessages.map(m => `
+        win.innerHTML = chatMessages.map((m, idx) => `
             <div style="align-self: ${currentUser && m.email===currentUser.email ? 'flex-end' : 'flex-start'}; max-width:80%;">
-                <div style="background:${currentUser && m.email===currentUser.email ? 'var(--primary)':'#333'}; color:${currentUser && m.email===currentUser.email ? '#000':'#fff'}; padding:10px; border-radius:15px;">
+                <div style="background:${currentUser && m.email===currentUser.email ? 'var(--primary)':'#333'}; color:${currentUser && m.email===currentUser.email ? '#000':'#fff'}; padding:10px; border-radius:15px; position:relative;">
                     <div style="display:flex; align-items:center; gap:5px; font-size:0.7rem; font-weight:bold; margin-bottom:5px;">
                         <img src="${m.avatar}" style="width:20px; height:20px; border-radius:50%; object-fit:cover;"> ${m.user}
+                        ${devAuth.isDev() ? `<i class="fa-solid fa-trash" style="color:red; cursor:pointer; margin-right:auto;" onclick="devAuth.deleteChat(${idx})"></i>` : ''}
                     </div>
                     ${m.text}
                 </div>
@@ -299,7 +326,21 @@
     function logout() { currentUser = null; sessionStorage.clear(); updateNav(); showPage('home'); }
     function toggleAuth() { document.getElementById('reg-extras').classList.toggle('hidden'); }
     function notify(m) { const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block'; setTimeout(()=>t.style.display='none', 2000); }
-    function renderLeaderboard() { document.getElementById('l-list').innerHTML = `<h3>🏆 المتصدرون</h3>` + users.sort((a,b)=>b.km-a.km).map(u => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #333;"><span>${u.name}</span><b>${u.km} كم</b></div>`).join(''); }
+    
+    function renderLeaderboard() { 
+        document.getElementById('l-list').innerHTML = `<h3>🏆 المتصدرون</h3>` + 
+        users.sort((a,b)=>b.km-a.km).map(u => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #333;">
+                <span>${u.name} ${u.email === 'dev@yallaride.com' ? '<span class="dev-badge">DEV</span>' : ''}</span>
+                <div style="display:flex; align-items:center;">
+                    ${devAuth.isDev() ? `
+                        <button class="dev-btn-small" onclick="devAuth.updateKm('${u.email}', 5)">+5</button>
+                        <button class="dev-btn-small" onclick="devAuth.updateKm('${u.email}', -5)" style="background:var(--danger)">-5</button>
+                    ` : ''}
+                    <b style="margin-right:10px;">${u.km || 0} كم</b>
+                </div>
+            </div>`).join(''); 
+    }
 
     updateNav();
 </script>
