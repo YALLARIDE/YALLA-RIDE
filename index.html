@@ -6,7 +6,6 @@
     <title>YALLA RIDE | التطبيق الرسمي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
@@ -20,6 +19,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; }
         body { background-color: var(--dark); color: var(--text); line-height: 1.6; overflow-x: hidden; }
 
+        /* Navigation */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 5%; background: var(--nav); height: 75px;
@@ -36,32 +36,39 @@
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Card System */
         .card { background: var(--card); border-radius: 20px; padding: 25px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
         
+        /* Goals Grid */
         .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .goal-item { background: var(--glass); padding: 20px; border-radius: 15px; border-right: 5px solid var(--primary); display: flex; flex-direction: column; gap: 10px; }
         .goal-item i { font-size: 2rem; color: var(--primary); }
         .goal-item h4 { color: var(--gold); }
 
+        /* Levels Design */
         .level-section { margin-bottom: 40px; }
         .level-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 10px; border-radius: 12px; }
         .sub-levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .sub-card { background: var(--card); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden; }
         .elevation-tag { font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; color: var(--gold); }
 
+        /* Admin Controls */
+        .admin-only { border: 2px dashed var(--gold) !important; position: relative; }
+        .admin-badge { position: absolute; top: -10px; left: 10px; background: var(--gold); color: #000; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
         .admin-btn { padding: 5px 10px; font-size: 0.75rem; border-radius: 8px; border: none; cursor: pointer; margin: 2px; font-weight: bold; }
 
+        /* Chat */
         #chat-win { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 15px; }
         .msg { max-width: 80%; padding: 10px 15px; border-radius: 15px; position: relative; }
         .msg.me { align-self: flex-end; background: var(--primary); color: #000; border-bottom-left-radius: 2px; }
         .msg.others { align-self: flex-start; background: #334155; border-bottom-right-radius: 2px; }
 
         button { background: var(--primary); color: #0f172a; border: none; padding: 12px 25px; border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
         input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; }
 
         .hidden { display: none !important; }
         #noti-badge { background: var(--danger); color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.6rem; position: absolute; top: 15px; }
-        .user-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
     </style>
 </head>
 <body>
@@ -142,9 +149,18 @@
                 <h3>المستوى الأول: مبتدئ (0–25 كم)</h3>
             </div>
             <div class="sub-levels">
-                <div class="sub-card"><h4>مبتدئ A <span class="elevation-tag">0–50م ارتفاع</span></h4><p>0–10 كم | لتعليم القيادة وكسر حاجز الخوف.</p></div>
-                <div class="sub-card"><h4>مبتدئ B <span class="elevation-tag">50–120م ارتفاع</span></h4><p>10–18 كم | للمشاركين ذوي القدرة الأولية.</p></div>
-                <div class="sub-card"><h4>مبتدئ C <span class="elevation-tag">120–200م ارتفاع</span></h4><p>18–25 كم | مرحلة التحضير للمستوى المتوسط.</p></div>
+                <div class="sub-card">
+                    <h4>مبتدئ A <span class="elevation-tag">0–50م ارتفاع</span></h4>
+                    <p>0–10 كم | لتعليم القيادة وكسر حاجز الخوف.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>مبتدئ B <span class="elevation-tag">50–120م ارتفاع</span></h4>
+                    <p>10–18 كم | للمشاركين ذوي القدرة الأولية.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>مبتدئ C <span class="elevation-tag">120–200م ارتفاع</span></h4>
+                    <p>18–25 كم | مرحلة التحضير للمستوى المتوسط.</p>
+                </div>
             </div>
         </div>
 
@@ -154,9 +170,18 @@
                 <h3>المستوى الثاني: متوسط (25–60 كم)</h3>
             </div>
             <div class="sub-levels">
-                <div class="sub-card"><h4>متوسط A <span class="elevation-tag">200–350م ارتفاع</span></h4><p>25–35 كم | لمن لديهم لياقة بدنية مقبولة.</p></div>
-                <div class="sub-card"><h4>متوسط B <span class="elevation-tag">350–500م ارتفاع</span></h4><p>35–45 كم | يحتاج قدرة تحمل جيدة.</p></div>
-                <div class="sub-card"><h4>متوسط C <span class="elevation-tag">500–700م ارتفاع</span></h4><p>45–60 كم | جولات طويلة تتحدى قدراتك.</p></div>
+                <div class="sub-card">
+                    <h4>متوسط A <span class="elevation-tag">200–350م ارتفاع</span></h4>
+                    <p>25–35 كم | لمن لديهم لياقة بدنية مقبولة.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متوسط B <span class="elevation-tag">350–500م ارتفاع</span></h4>
+                    <p>35–45 كم | يحتاج قدرة تحمل جيدة وجهد بدني.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متوسط C <span class="elevation-tag">500–700م ارتفاع</span></h4>
+                    <p>45–60 كم | جولات طويلة تتحدى قدراتك.</p>
+                </div>
             </div>
         </div>
 
@@ -166,9 +191,18 @@
                 <h3>المستوى الثالث: متقدم (60–100 كم)</h3>
             </div>
             <div class="sub-levels">
-                <div class="sub-card"><h4>متقدم A <span class="elevation-tag">700–1000م ارتفاع</span></h4><p>60–75 كم | لياقة عالية جداً.</p></div>
-                <div class="sub-card"><h4>متقدم B <span class="elevation-tag">1000–1400م ارتفاع</span></h4><p>75–90 كم | تحدي المسافات الطويلة والقمم.</p></div>
-                <div class="sub-card"><h4>متقدم C <span class="elevation-tag">1400–1800م ارتفاع</span></h4><p>90–100 كم | مستوى الرياضيين والمحترفين.</p></div>
+                <div class="sub-card">
+                    <h4>متقدم A <span class="elevation-tag">700–1000م ارتفاع</span></h4>
+                    <p>60–75 كم | لياقة عالية جداً وخبرة ميدانية.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متقدم B <span class="elevation-tag">1000–1400م ارتفاع</span></h4>
+                    <p>75–90 كم | تحدي المسافات الطويلة والقمم.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متقدم C <span class="elevation-tag">1400–1800م ارتفاع</span></h4>
+                    <p>90–100 كم | مستوى الرياضيين والمحترفين.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -179,15 +213,16 @@
         <div class="card" style="display:flex; justify-content:space-around; text-align:center;">
             <div><h3 id="stat-u" style="color:var(--primary)">0</h3><small>دراج</small></div>
             <div><h3 id="stat-k" style="color:var(--gold)">0</h3><small>إجمالي كم</small></div>
+            <div><h3 id="stat-a" style="color:var(--beginner)">0</h3><small>نشط</small></div>
         </div>
-        <input type="text" id="m-search" placeholder="ابحث عن زميل..." oninput="fetchMembers()">
+        <input type="text" id="m-search" placeholder="ابحث عن زميل في الفريق..." oninput="renderMembers()">
         <div id="m-list"></div>
     </div>
 </div>
 
 <div id="chat" class="page">
     <div class="container card">
-        <h3><i class="fa-solid fa-comments"></i> الدردشة العامة</h3>
+        <h3 style="margin-bottom:15px;"><i class="fa-solid fa-comments"></i> الدردشة العامة</h3>
         <div id="chat-win"></div>
         <div id="chat-form" class="hidden" style="margin-top:15px; display:flex; gap:10px;">
             <input type="text" id="chat-input" placeholder="اكتب رسالتك هنا...">
@@ -198,7 +233,12 @@
 
 <div id="notifications" class="page">
     <div class="container">
-        <div id="dev-noti-box" class="card hidden"><h4>نشر تنبيه رسمي</h4><textarea id="noti-text"></textarea><button onclick="publishNoti()">نشر</button></div>
+        <div id="dev-noti-box" class="card admin-only hidden">
+            <span class="admin-badge">لوحة تحكم المطور</span>
+            <h4>نشر تنبيه رسمي</h4>
+            <textarea id="noti-text" placeholder="اكتب نص التنبيه هنا..."></textarea>
+            <button onclick="publishNoti()">نشر الآن</button>
+        </div>
         <div id="noti-list"></div>
     </div>
 </div>
@@ -211,107 +251,184 @@
     <div class="container card" style="max-width:450px;">
         <h2 id="auth-title" style="text-align:center;">تسجيل الدخول</h2>
         <div id="reg-fields" class="hidden">
-            <input type="text" id="reg-name" placeholder="الاسم">
+            <input type="text" id="reg-name" placeholder="الاسم بالكامل">
+            <label style="font-size:0.8rem;">صورة البروفايل:</label>
             <input type="file" id="reg-img" accept="image/*">
         </div>
-        <input type="email" id="auth-email" placeholder="البريد">
+        <input type="email" id="auth-email" placeholder="البريد الإلكتروني">
         <input type="password" id="auth-pass" placeholder="كلمة المرور">
-        <button onclick="processAuth()" id="auth-main-btn">تأكيد</button>
-        <p onclick="toggleAuth()" id="auth-toggle" style="text-align:center; cursor:pointer; color:var(--primary);">سجل الآن</p>
+        <button onclick="processAuth()">تأكيد</button>
+        <p onclick="toggleAuth()" id="auth-toggle" style="text-align:center; margin-top:15px; cursor:pointer; color:var(--primary);">ليس لديك حساب؟ سجل الآن</p>
     </div>
 </div>
 
 <script>
-    // --- إعدادات الربط ---
-    const SUPABASE_URL = 'رابط_مشروعك'; 
-    const SUPABASE_KEY = 'مفتاح_anon';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+    // قاعدة البيانات (LocalStorage)
+    let users = JSON.parse(localStorage.getItem('yr_users')) || [];
+    let chats = JSON.parse(localStorage.getItem('yr_chats')) || [];
+    let notis = JSON.parse(localStorage.getItem('yr_notis')) || [{id:1, text:"مرحباً بكم في عائلة YALLA RIDE الرسمية!", date:"2026-02-04"}];
     let currentUser = JSON.parse(sessionStorage.getItem('yr_sess')) || null;
 
-    async function showPage(id) {
+    function isDev() { return currentUser && currentUser.email === "dev@yallaride.com"; }
+
+    function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         window.scrollTo(0,0);
-        if(id === 'members') fetchMembers();
-        if(id === 'chat') { fetchMessages(); subscribeChat(); }
-        if(id === 'notifications') fetchNotis();
+        if(id === 'members') renderMembers();
+        if(id === 'chat') renderChat();
+        if(id === 'notifications') { renderNotis(); document.getElementById('noti-badge').classList.add('hidden'); }
         if(id === 'profile') renderProfile();
     }
 
     // إدارة الأعضاء
-    async function fetchMembers() {
+    function renderMembers() {
         const q = document.getElementById('m-search').value.toLowerCase();
-        const { data: users } = await supabaseClient.from('profiles').select('*').order('km', { ascending: false });
-        if(!users) return;
+        const list = document.getElementById('m-list');
+        const totalKm = users.reduce((s, u) => s + (parseFloat(u.km) || 0), 0);
+        
         document.getElementById('stat-u').innerText = users.length;
-        document.getElementById('stat-k').innerText = users.reduce((s, u) => s + (u.km || 0), 0).toFixed(0);
-        document.getElementById('m-list').innerHTML = users.filter(u => u.name.toLowerCase().includes(q)).map((u, i) => `
+        document.getElementById('stat-k').innerText = totalKm.toFixed(0);
+        document.getElementById('stat-a').innerText = users.filter(u => u.km > 50).length;
+
+        list.innerHTML = users.filter(u => u.name.toLowerCase().includes(q)).map(u => `
             <div class="card" style="display:flex; align-items:center; justify-content:space-between; padding:15px;">
                 <div style="display:flex; align-items:center; gap:15px;">
-                    <img src="${u.avatar_url}" class="user-avatar" onerror="this.src='https://via.placeholder.com/50'">
-                    <div><h4>${u.name}</h4><small>${u.km} كم</small></div>
+                    <img src="${u.img || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+                    <div>
+                        <h4 style="margin:0">${u.name} ${u.email === 'dev@yallaride.com' ? '⭐' : ''}</h4>
+                        <small style="color:#64748b">${u.km} كم مقطوعة</small>
+                    </div>
                 </div>
-                <div style="font-weight:900; color:var(--primary)">#${i+1}</div>
+                ${isDev() ? `
+                    <div>
+                        <button class="admin-btn" style="background:var(--gold)" onclick="editKm('${u.email}')">تعديل</button>
+                        <button class="admin-btn" style="background:var(--danger); color:white" onclick="delUser('${u.email}')">حذف</button>
+                    </div>
+                ` : `<div style="font-weight:900; color:var(--primary)">#${users.indexOf(u)+1}</div>`}
             </div>
         `).join('');
     }
 
-    // الدردشة
-    async function fetchMessages() {
-        const { data: chats } = await supabaseClient.from('messages').select('*').order('created_at', { ascending: true });
+    function editKm(email) {
+        const u = users.find(x => x.email === email);
+        const val = prompt(`تعديل المسافة لـ ${u.name}:`, u.km);
+        if(val !== null) { u.km = parseFloat(val) || 0; sync(); renderMembers(); }
+    }
+
+    function delUser(email) {
+        if(email === 'dev@yallaride.com') return;
+        if(confirm('حذف هذا العضو نهائياً؟')) { users = users.filter(u => u.email !== email); sync(); renderMembers(); }
+    }
+
+    // إدارة الدردشة
+    function renderChat() {
         const win = document.getElementById('chat-win');
         document.getElementById('chat-form').classList.toggle('hidden', !currentUser);
-        win.innerHTML = chats.map(m => `
-            <div class="msg ${currentUser && m.sender_email === currentUser.email ? 'me' : 'others'}">
-                <small style="display:block; font-weight:bold;">${m.sender_name}</small>${m.text}
+        win.innerHTML = chats.map((m, i) => `
+            <div class="msg ${currentUser && m.email === currentUser.email ? 'me' : 'others'}">
+                <small style="display:block; font-size:0.6rem; font-weight:bold;">${m.name} ${isDev() ? `<i class="fa-solid fa-trash" onclick="delMsg(${i})" style="color:red; cursor:pointer; margin-right:5px"></i>` : ''}</small>
+                ${m.text}
             </div>
         `).join('');
         win.scrollTop = win.scrollHeight;
     }
 
-    function subscribeChat() {
-        supabaseClient.channel('chat').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, fetchMessages).subscribe();
-    }
-
-    async function sendMsg() {
+    function sendMsg() {
         const inp = document.getElementById('chat-input');
-        if(!inp.value || !currentUser) return;
-        await supabaseClient.from('messages').insert([{ sender_name: currentUser.name, sender_email: currentUser.email, text: inp.value }]);
-        inp.value = '';
+        if(!inp.value) return;
+        chats.push({ name: currentUser.name, email: currentUser.email, text: inp.value });
+        sync(); inp.value = ''; renderChat();
     }
 
-    // الدخول
+    function delMsg(i) { chats.splice(i, 1); sync(); renderChat(); }
+
+    // إدارة الإشعارات
+    function renderNotis() {
+        const list = document.getElementById('noti-list');
+        document.getElementById('dev-noti-box').classList.toggle('hidden', !isDev());
+        list.innerHTML = notis.map(n => `
+            <div class="card" style="border-right: 5px solid var(--gold); position:relative;">
+                <small style="color:var(--gold)">${n.date}</small>
+                <p style="margin-top:5px;">${n.text}</p>
+                ${isDev() ? `<i class="fa-solid fa-circle-xmark" onclick="delNoti(${n.id})" style="position:absolute; left:15px; top:15px; color:var(--danger); cursor:pointer;"></i>` : ''}
+            </div>
+        `).reverse().join('');
+    }
+
+    function publishNoti() {
+        const txt = document.getElementById('noti-text');
+        if(!txt.value) return;
+        notis.push({ id: Date.now(), text: txt.value, date: new Date().toLocaleDateString('ar-EG') });
+        sync(); txt.value = ''; renderNotis();
+    }
+
+    function delNoti(id) { notis = notis.filter(n => n.id !== id); sync(); renderNotis(); }
+
+    // المصادقة
     async function processAuth() {
-        const email = document.getElementById('auth-email').value, pass = document.getElementById('auth-pass').value;
+        const e = document.getElementById('auth-email').value, p = document.getElementById('auth-pass').value;
         const isReg = !document.getElementById('reg-fields').classList.contains('hidden');
-        try {
-            if(isReg) {
-                const name = document.getElementById('reg-name').value, file = document.getElementById('reg-img').files[0];
-                const { data: aData } = await supabaseClient.auth.signUp({ email, password: pass });
-                let imgUrl = "https://via.placeholder.com/150";
-                if(file) {
-                    const fname = `${Date.now()}_${file.name}`;
-                    await supabaseClient.storage.from('avatars').upload(fname, file);
-                    imgUrl = supabaseClient.storage.from('avatars').getPublicUrl(fname).data.publicUrl;
-                }
-                await supabaseClient.from('profiles').insert([{ id: aData.user.id, name, email, avatar_url: imgUrl, km: 0 }]);
-                alert("تم! سجل دخولك الآن."); location.reload();
-            } else {
-                const { data: aData } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
-                const { data: prof } = await supabaseClient.from('profiles').select('*').eq('id', aData.user.id).single();
-                currentUser = { name: prof.name, email: prof.email, img: prof.avatar_url, km: prof.km };
-                sessionStorage.setItem('yr_sess', JSON.stringify(currentUser));
-                updateUI(); showPage('home');
+
+        if(!isReg && e === 'dev@yallaride.com' && p === 'Dev2026') {
+            currentUser = { name: "مطور المنصة", email: e, img: "IMG_0660.PNG", km: 9999 };
+            sessionStorage.setItem('yr_sess', JSON.stringify(currentUser));
+            updateUI(); showPage('home'); return;
+        }
+
+        if(isReg) {
+            const n = document.getElementById('reg-name').value, f = document.getElementById('reg-img').files[0];
+            if(!n || !e || !p) return alert("يرجى ملء كافة الحقول");
+            let imgData = "https://via.placeholder.com/150";
+            if(f) {
+                const reader = new FileReader();
+                reader.readAsDataURL(f);
+                reader.onload = () => { finalizeReg(n, e, p, reader.result); };
+                return;
             }
-        } catch(e) { alert(e.message); }
+            finalizeReg(n, e, p, imgData);
+        } else {
+            const u = users.find(u => u.email === e && u.pass === p);
+            if(u) { currentUser = u; sessionStorage.setItem('yr_sess', JSON.stringify(u)); updateUI(); showPage('home'); }
+            else alert("بيانات الدخول غير صحيحة");
+        }
     }
 
+    function finalizeReg(n, e, p, img) {
+        const newUser = { name: n, email: e, pass: p, img: img, km: 0 };
+        users.push(newUser); sync();
+        currentUser = newUser; sessionStorage.setItem('yr_sess', JSON.stringify(newUser));
+        updateUI(); showPage('home');
+    }
+
+    // البروفايل
     function renderProfile() {
         const con = document.getElementById('profile-content');
         if(!currentUser) return;
-        con.innerHTML = `<img src="${currentUser.img}" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid var(--primary);">
-            <h2>${currentUser.name}</h2><div class="card"><h1>${currentUser.km}</h1><p>كم</p></div><button onclick="logout()">خروج</button>`;
+        let rank = "عضو جديد";
+        if(currentUser.km > 100) rank = "دراج فضي";
+        if(currentUser.km > 500) rank = "دراج ذهبي";
+        if(currentUser.email === 'dev@yallaride.com') rank = "المطور المعتمد";
+
+        con.innerHTML = `
+            <img src="${currentUser.img}" style="width:150px; height:150px; border-radius:50%; border:4px solid var(--primary); object-fit:cover; margin-bottom:20px;">
+            <h2 style="margin:0">${currentUser.name}</h2>
+            <p style="color:var(--gold); font-weight:bold;">${rank}</p>
+            <div class="card" style="margin:20px 0; background:rgba(0,0,0,0.2)">
+                <h1 style="font-size:3rem; color:var(--primary);">${currentUser.km}</h1>
+                <p>كيلومتر إجمالي</p>
+            </div>
+            ${isDev() ? `<button onclick="fullWipe()" style="background:var(--danger); margin-bottom:10px;">تصفير كافة البيانات (Dev Only)</button>` : ''}
+            <button onclick="logout()" style="background:#444;">تسجيل الخروج</button>
+        `;
+    }
+
+    function fullWipe() { if(confirm('سيتم حذف كل شيء! هل أنت متأكد؟')) { localStorage.clear(); location.reload(); } }
+
+    function sync() {
+        localStorage.setItem('yr_users', JSON.stringify(users));
+        localStorage.setItem('yr_chats', JSON.stringify(chats));
+        localStorage.setItem('yr_notis', JSON.stringify(notis));
     }
 
     function updateUI() {
@@ -319,10 +436,67 @@
         document.getElementById('nav-login').classList.toggle('hidden', !!currentUser);
     }
 
-    function logout() { sessionStorage.clear(); location.reload(); }
-    function toggleAuth() { document.getElementById('reg-fields').classList.toggle('hidden'); }
+    function logout() { sessionStorage.clear(); currentUser = null; updateUI(); showPage('home'); }
+    function toggleAuth() { 
+        const isReg = document.getElementById('reg-fields').classList.toggle('hidden');
+        document.getElementById('auth-title').innerText = isReg ? "تسجيل دخول" : "إنشاء حساب جديد";
+        document.getElementById('auth-toggle').innerText = isReg ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب؟ سجل دخولك";
+    }
+
+    // تهيئة الإشعارات
+    if(notis.length > 0) {
+        const badge = document.getElementById('noti-badge');
+        badge.innerText = notis.length;
+        badge.classList.remove('hidden');
+    }
 
     updateUI();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // 1. استبدل هذه الروابط بالروابط الحقيقية من حسابك في Supabase
+  const SUPABASE_URL = 'https://your-project-url.supabase.co'; 
+  const SUPABASE_ANON_KEY = 'your-anon-key-here';
+
+  // 2. تشغيل اتصال Supabase
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // الآن أصبح المتغير (supabase) جاهزاً للاستخدام في أي مكان في الكود!
+// 1. الرابط المأخوذ من صورتك
+const supabaseUrl = 'https://pgodrsvjfpizikajiddt.supabase.co';
+
+// 2. مفتاح الربط (ستجده في صفحة API Settings التي يشير إليها النص في صورتك)
+const supabaseKey = 'ضَع_مفتاح_ANON_KEY_هنا'; 
+
+// 3. إنشاء الاتصال بالمكتبة
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+console.log("تم تهيئة Supabase بنجاح لـ YALLA RIDE!");
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    // استخدم القيم من الصور التي أرسلتها
+    const supabaseUrl = 'https://pgodrsvjfpizikajiddt.supabase.co'; // من الصورة الثانية
+    const supabaseKey = 'sb_publishable_zvWEdepdH6cux6CWgoErOg_T3RmfV1G' // ستجده تحت كلمة Project API keys في صفحة API
+
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // الآن سنقوم بتغيير طريقة جلب المستخدمين لتكون من السحاب
+    let users = [];
+    
+    async function loadDataFromSupabase() {
+        // جلب المستخدمين من جدول profiles في Supabase
+        const { data, error } = await supabase.from('profiles').select('*');
+        if (!error) {
+            users = data;
+            renderMembers();
+        } else {
+            console.error("خطأ في جلب البيانات:", error.message);
+        }
+    }
+
+    // استدعاء الدالة عند تحميل الصفحة
+    loadDataFromSupabase();
+
 </body>
-</html>
+    </html>
