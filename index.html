@@ -6,7 +6,7 @@
     <title>YALLA RIDE | التطبيق الرسمي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         :root {
             --primary: #00d2ff; --dark: #0f172a; --card: #1e293b;
@@ -15,34 +15,60 @@
             --beginner: #22c55e; --inter: #3b82f6; --adv: #ef4444;
             --glass: rgba(30, 41, 59, 0.7);
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; }
         body { background-color: var(--dark); color: var(--text); line-height: 1.6; overflow-x: hidden; }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: var(--nav); height: 75px; position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid var(--primary); backdrop-filter: blur(10px); }
+
+        /* Navigation */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; background: var(--nav); height: 75px;
+            position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid var(--primary);
+            backdrop-filter: blur(10px);
+        }
         .main-logo { height: 50px; width: 50px; border-radius: 50%; border: 2px solid var(--primary); }
         .nav-links { display: flex; gap: 20px; list-style: none; }
         .nav-links a { color: #94a3b8; text-decoration: none; font-size: 1.3rem; cursor: pointer; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); transform: scale(1.1); }
+
         .container { max-width: 1000px; margin: auto; padding: 20px; }
         .page { display: none; animation: slideUp 0.4s ease-out; }
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Card System */
         .card { background: var(--card); border-radius: 20px; padding: 25px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
+        
+        /* Goals Grid */
         .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .goal-item { background: var(--glass); padding: 20px; border-radius: 15px; border-right: 5px solid var(--primary); display: flex; flex-direction: column; gap: 10px; }
         .goal-item i { font-size: 2rem; color: var(--primary); }
         .goal-item h4 { color: var(--gold); }
+
+        /* Levels Design */
         .level-section { margin-bottom: 40px; }
         .level-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 10px; border-radius: 12px; }
         .sub-levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .sub-card { background: var(--card); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden; }
         .elevation-tag { font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; color: var(--gold); }
+
+        /* Admin Controls */
+        .admin-only { border: 2px dashed var(--gold) !important; position: relative; }
+        .admin-badge { position: absolute; top: -10px; left: 10px; background: var(--gold); color: #000; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+        .admin-btn { padding: 5px 10px; font-size: 0.75rem; border-radius: 8px; border: none; cursor: pointer; margin: 2px; font-weight: bold; }
+
+        /* Chat */
         #chat-win { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 15px; }
-        .msg { max-width: 80%; padding: 10px 15px; border-radius: 15px; }
-        .msg.me { align-self: flex-end; background: var(--primary); color: #000; }
-        .msg.others { align-self: flex-start; background: #334155; }
+        .msg { max-width: 80%; padding: 10px 15px; border-radius: 15px; position: relative; }
+        .msg.me { align-self: flex-end; background: var(--primary); color: #000; border-bottom-left-radius: 2px; }
+        .msg.others { align-self: flex-start; background: #334155; border-bottom-right-radius: 2px; }
+
         button { background: var(--primary); color: #0f172a; border: none; padding: 12px 25px; border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; }
+
         .hidden { display: none !important; }
+        #noti-badge { background: var(--danger); color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.6rem; position: absolute; top: 15px; }
     </style>
 </head>
 <body>
@@ -50,169 +76,359 @@
 <nav>
     <div onclick="showPage('home')" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
         <img src="IMG_0660.PNG" class="main-logo" onerror="this.src='https://via.placeholder.com/50'">
-        <h2 style="font-weight:900; color:var(--primary)">YALLA RIDE</h2>
+        <h2 style="font-weight:900; letter-spacing:1px; color:var(--primary)">YALLA RIDE</h2>
     </div>
     <ul class="nav-links">
-        <li><a onclick="showPage('members')"><i class="fa-solid fa-users-gear"></i></a></li>
-        <li><a onclick="showPage('levels')"><i class="fa-solid fa-mountain-sun"></i></a></li>
-        <li><a onclick="showPage('chat')"><i class="fa-solid fa-comment-dots"></i></a></li>
-        <li><a onclick="showPage('notifications')"><i class="fa-solid fa-bell"></i></a></li>
-        <li><a onclick="showPage('about')"><i class="fa-solid fa-bullseye"></i></a></li>
-        <li id="nav-profile" class="hidden"><a onclick="showPage('profile')"><i class="fa-solid fa-circle-user" style="color:var(--gold)"></i></a></li>
+        <li><a onclick="showPage('members')" title="الأعضاء"><i class="fa-solid fa-users-gear"></i></a></li>
+        <li><a onclick="showPage('levels')" title="المستويات"><i class="fa-solid fa-mountain-sun"></i></a></li>
+        <li><a onclick="showPage('chat')" title="الدردشة"><i class="fa-solid fa-comment-dots"></i></a></li>
+        <li><a onclick="showPage('notifications')" title="التنبيهات"><i class="fa-solid fa-bell"></i><span id="noti-badge" class="hidden">0</span></a></li>
+        <li><a onclick="showPage('about')" title="الأهداف"><i class="fa-solid fa-bullseye"></i></a></li>
+        <li id="nav-profile" class="hidden"><a onclick="showPage('profile')" style="color:var(--gold)"><i class="fa-solid fa-circle-user"></i></a></li>
         <li id="nav-login"><a onclick="showPage('login')"><i class="fa-solid fa-right-to-bracket"></i></a></li>
     </ul>
 </nav>
 
 <div id="home" class="page active">
     <div class="container" style="text-align:center; padding-top: 10vh;">
-        <img src="IMG_0660.PNG" style="width: 200px;">
-        <h1 style="font-size: 3.5rem; font-weight: 900; margin: 20px 0;">YALLA RIDE</h1>
-        <p style="color: var(--gold); font-weight: bold; letter-spacing: 3px;">KEEP ROLLING YOUR WHEELS</p>
+        <img src="IMG_0660.PNG" style="width: 200px; filter: drop-shadow(0 0 20px var(--primary));">
+        <h1 style="font-size: 4rem; font-weight: 900; margin: 20px 0;">YALLA RIDE</h1>
+        <p style="font-size: 1.2rem; color: var(--gold); font-weight: bold; letter-spacing: 3px;">KEEP ROLLING YOUR WHEELS</p>
+        <div style="margin-top: 40px; display: flex; justify-content: center; gap: 15px;">
+            <button onclick="showPage('about')" style="width: auto;">اكتشف أهدافنا</button>
+            <button onclick="showPage('login')" style="width: auto; background: none; border: 2px solid var(--primary); color: white;">انضم للفريق</button>
+        </div>
     </div>
 </div>
 
 <div id="about" class="page">
     <div class="container">
-        <h2 style="text-align:center; margin-bottom:40px;">رؤيتنا وأهدافنا</h2>
+        <h2 style="text-align:center; margin-bottom:40px;"><i class="fa-solid fa-flag-checkered"></i> رؤيتنا وأهدافنا</h2>
         <div class="goals-grid">
-            <div class="goal-item"><i class="fa-solid fa-earth-africa"></i><h4>شمولية المجتمع</h4><p>نشر ثقافة ركوب الدراجة بين كافة أطياف المجتمع.</p></div>
-            <div class="goal-item" style="border-right-color: var(--pink);"><i class="fa-solid fa-venus" style="color:var(--pink)"></i><h4>تمكين المرأة</h4><p>تشجيع الفتيات على كسر الصورة النمطية.</p></div>
-            <div class="goal-item" style="border-right-color: var(--inter);"><i class="fa-solid fa-handshake-angle" style="color:var(--inter)"></i><h4>التماسك المجتمعي</h4><p>تعزيز الروابط الإنسانية ونشر ثقافة الاحترام.</p></div>
-            <div class="goal-item" style="border-right-color: var(--beginner);"><i class="fa-solid fa-heart-pulse" style="color:var(--beginner)"></i><h4>الرياضة حياة</h4><p>التوعية بأن الرياضة ضرورة صحية أساسية.</p></div>
-            <div class="goal-item" style="border-right-color: var(--gold);"><i class="fa-solid fa-user-tie" style="color:var(--gold)"></i><h4>قادة المستقبل</h4><p>بناء شخصيات مسؤولة من خلال برامج التطوع.</p></div>
-            <div class="goal-item"><i class="fa-solid fa-envelope-open-text"></i><h4>رسائل توعوية</h4><p>استخدام الدراجة كمنصة لإيصال رسائل هادفة.</p></div>
+            <div class="goal-item">
+                <i class="fa-solid fa-earth-africa"></i>
+                <h4>شمولية المجتمع</h4>
+                <p>نشر ثقافة ركوب الدراجة بين كافة أطياف المجتمع (متعلم، غير متعلم، غني، فقير، صغير، وكبير).</p>
+            </div>
+            <div class="goal-item" style="border-right-color: var(--pink);">
+                <i class="fa-solid fa-venus" style="color: var(--pink);"></i>
+                <h4>تمكين المرأة</h4>
+                <p>تشجيع الفتيات على كسر الصورة النمطية، زيادة الثقة بالنفس، ودعم الاستقلال الذاتي والمساواة.</p>
+            </div>
+            <div class="goal-item" style="border-right-color: var(--inter);">
+                <i class="fa-solid fa-handshake-angle" style="color: var(--inter);"></i>
+                <h4>التماسك المجتمعي</h4>
+                <p>تعزيز الروابط الإنسانية من خلال الرياضة ونشر ثقافة الاحترام المتبادل والدعم والانتماء.</p>
+            </div>
+            <div class="goal-item" style="border-right-color: var(--beginner);">
+                <i class="fa-solid fa-heart-pulse" style="color: var(--beginner);"></i>
+                <h4>الرياضة حياة</h4>
+                <p>التوعية بأن الرياضة ليست رفاهية ترفيهية بل ضرورة صحية أساسية لكل فرد.</p>
+            </div>
+            <div class="goal-item" style="border-right-color: var(--gold);">
+                <i class="fa-solid fa-user-tie" style="color: var(--gold);"></i>
+                <h4>قادة المستقبل</h4>
+                <p>بناء شخصيات مسؤولة وقيادية من خلال برامج التطوع وتسليم المسؤوليات الميدانية.</p>
+            </div>
+            <div class="goal-item">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <h4>رسائل توعوية</h4>
+                <p>استخدام الدراجة كمنصة لإيصال رسائل هادفة وتوعوية تخدم المجتمع وتطوره.</p>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="levels" class="page">
     <div class="container">
-        <h2 style="text-align:center; margin-bottom:30px;">تصنيف الجولات</h2>
+        <h2 style="text-align:center; margin-bottom:30px;">تصنيف جولات YALLA RIDE</h2>
         
         <div class="level-section">
-            <div class="level-header" style="background: rgba(34, 197, 94, 0.1); border-right: 5px solid var(--beginner);"><h3>المستوى الأول: مبتدئ (0–25 كم)</h3></div>
+            <div class="level-header" style="background: rgba(34, 197, 94, 0.2); border-right: 5px solid var(--beginner);">
+                <i class="fa-solid fa-seedling" style="color: var(--beginner);"></i>
+                <h3>المستوى الأول: مبتدئ (0–25 كم)</h3>
+            </div>
             <div class="sub-levels">
-                <div class="sub-card"><h4>مبتدئ A <span class="elevation-tag">0–50م</span></h4><p>0–10 كم | لتعليم القيادة.</p></div>
-                <div class="sub-card"><h4>مبتدئ B <span class="elevation-tag">50–120م</span></h4><p>10–18 كم | قدرة أولية.</p></div>
-                <div class="sub-card"><h4>مبتدئ C <span class="elevation-tag">120–200م</span></h4><p>18–25 كم | تحضير للمتوسط.</p></div>
+                <div class="sub-card">
+                    <h4>مبتدئ A <span class="elevation-tag">0–50م ارتفاع</span></h4>
+                    <p>0–10 كم | لتعليم القيادة وكسر حاجز الخوف.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>مبتدئ B <span class="elevation-tag">50–120م ارتفاع</span></h4>
+                    <p>10–18 كم | للمشاركين ذوي القدرة الأولية.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>مبتدئ C <span class="elevation-tag">120–200م ارتفاع</span></h4>
+                    <p>18–25 كم | مرحلة التحضير للمستوى المتوسط.</p>
+                </div>
             </div>
         </div>
 
         <div class="level-section">
-            <div class="level-header" style="background: rgba(59, 130, 246, 0.1); border-right: 5px solid var(--inter);"><h3>المستوى الثاني: متوسط (25–60 كم)</h3></div>
+            <div class="level-header" style="background: rgba(59, 130, 246, 0.2); border-right: 5px solid var(--inter);">
+                <i class="fa-solid fa-bicycle" style="color: var(--inter);"></i>
+                <h3>المستوى الثاني: متوسط (25–60 كم)</h3>
+            </div>
             <div class="sub-levels">
-                <div class="sub-card"><h4>متوسط A <span class="elevation-tag">200–350م</span></h4><p>25–35 كم | لياقة مقبولة.</p></div>
-                <div class="sub-card"><h4>متوسط B <span class="elevation-tag">350–500م</span></h4><p>35–45 كم | تحمل جيد.</p></div>
-                <div class="sub-card"><h4>متوسط C <span class="elevation-tag">500–700م</span></h4><p>45–60 كم | جولات تحدي.</p></div>
+                <div class="sub-card">
+                    <h4>متوسط A <span class="elevation-tag">200–350م ارتفاع</span></h4>
+                    <p>25–35 كم | لمن لديهم لياقة بدنية مقبولة.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متوسط B <span class="elevation-tag">350–500م ارتفاع</span></h4>
+                    <p>35–45 كم | يحتاج قدرة تحمل جيدة وجهد بدني.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متوسط C <span class="elevation-tag">500–700م ارتفاع</span></h4>
+                    <p>45–60 كم | جولات طويلة تتحدى قدراتك.</p>
+                </div>
             </div>
         </div>
 
         <div class="level-section">
-            <div class="level-header" style="background: rgba(239, 68, 68, 0.1); border-right: 5px solid var(--adv);"><h3>المستوى الثالث: متقدم (60–100 كم)</h3></div>
-            <div class="sub-levels">
-                <div class="sub-card"><h4>متقدم A <span class="elevation-tag">700–1000م</span></h4><p>60–75 كم | لياقة عالية.</p></div>
-                <div class="sub-card"><h4>متقدم B <span class="elevation-tag">1000–1400م</span></h4><p>75–90 كم | تحدي القمم.</p></div>
-                <div class="sub-card"><h4>متقدم C <span class="elevation-tag">1400–1800م</span></h4><p>90–100 كم | للمحترفين.</p></div>
+            <div class="level-header" style="background: rgba(239, 68, 68, 0.2); border-right: 5px solid var(--adv);">
+                <i class="fa-solid fa-fire-flame-curved" style="color: var(--adv);"></i>
+                <h3>المستوى الثالث: متقدم (60–100 كم)</h3>
             </div>
-        </div>
-    </div>
-</div>
-
-<div id="chat" class="page">
-    <div class="container card">
-        <h3>الدردشة العامة</h3>
-        <div id="chat-win"></div>
-        <div id="chat-form" class="hidden" style="margin-top:15px; display:flex; gap:10px;">
-            <input type="text" id="chat-input" placeholder="اكتب رسالتك...">
-            <button onclick="sendMsg()" style="width:auto;">إرسال</button>
+            <div class="sub-levels">
+                <div class="sub-card">
+                    <h4>متقدم A <span class="elevation-tag">700–1000م ارتفاع</span></h4>
+                    <p>60–75 كم | لياقة عالية جداً وخبرة ميدانية.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متقدم B <span class="elevation-tag">1000–1400م ارتفاع</span></h4>
+                    <p>75–90 كم | تحدي المسافات الطويلة والقمم.</p>
+                </div>
+                <div class="sub-card">
+                    <h4>متقدم C <span class="elevation-tag">1400–1800م ارتفاع</span></h4>
+                    <p>90–100 كم | مستوى الرياضيين والمحترفين.</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="members" class="page">
     <div class="container">
-        <input type="text" id="m-search" placeholder="ابحث عن عضو..." oninput="renderMembers()">
+        <div class="card" style="display:flex; justify-content:space-around; text-align:center;">
+            <div><h3 id="stat-u" style="color:var(--primary)">0</h3><small>دراج</small></div>
+            <div><h3 id="stat-k" style="color:var(--gold)">0</h3><small>إجمالي كم</small></div>
+            <div><h3 id="stat-a" style="color:var(--beginner)">0</h3><small>نشط</small></div>
+        </div>
+        <input type="text" id="m-search" placeholder="ابحث عن زميل في الفريق..." oninput="renderMembers()">
         <div id="m-list"></div>
     </div>
 </div>
 
-<div id="notifications" class="page">
-    <div class="container" id="noti-list">
-        <div class="card"><p>مرحباً بكم في تطبيق YALLA RIDE الجديد! 🚴‍♂️</p></div>
+<div id="chat" class="page">
+    <div class="container card">
+        <h3 style="margin-bottom:15px;"><i class="fa-solid fa-comments"></i> الدردشة العامة</h3>
+        <div id="chat-win"></div>
+        <div id="chat-form" class="hidden" style="margin-top:15px; display:flex; gap:10px;">
+            <input type="text" id="chat-input" placeholder="اكتب رسالتك هنا...">
+            <button onclick="sendMsg()" style="width:auto;"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
     </div>
+</div>
+
+<div id="notifications" class="page">
+    <div class="container">
+        <div id="dev-noti-box" class="card admin-only hidden">
+            <span class="admin-badge">لوحة تحكم المطور</span>
+            <h4>نشر تنبيه رسمي</h4>
+            <textarea id="noti-text" placeholder="اكتب نص التنبيه هنا..."></textarea>
+            <button onclick="publishNoti()">نشر الآن</button>
+        </div>
+        <div id="noti-list"></div>
+    </div>
+</div>
+
+<div id="profile" class="page">
+    <div class="container card" id="profile-content" style="text-align:center;"></div>
 </div>
 
 <div id="login" class="page">
-    <div class="container card" style="max-width:400px; margin:auto;">
-        <h2>تسجيل دخول</h2>
-        <input type="text" id="auth-name" placeholder="الاسم">
-        <input type="email" id="auth-email" placeholder="الايميل">
+    <div class="container card" style="max-width:450px;">
+        <h2 id="auth-title" style="text-align:center;">تسجيل الدخول</h2>
+        <div id="reg-fields" class="hidden">
+            <input type="text" id="reg-name" placeholder="الاسم بالكامل">
+            <label style="font-size:0.8rem;">صورة البروفايل:</label>
+            <input type="file" id="reg-img" accept="image/*">
+        </div>
+        <input type="email" id="auth-email" placeholder="البريد الإلكتروني">
+        <input type="password" id="auth-pass" placeholder="كلمة المرور">
         <button onclick="processAuth()">تأكيد</button>
+        <p onclick="toggleAuth()" id="auth-toggle" style="text-align:center; margin-top:15px; cursor:pointer; color:var(--primary);">ليس لديك حساب؟ سجل الآن</p>
     </div>
 </div>
 
-<div id="profile" class="page"><div class="container card" id="profile-content" style="text-align:center;"></div></div>
-
 <script>
-    const supabaseUrl = 'https://fmzvmisnbxqtnjxhidxe.supabase.co';
-    const supabaseKey = 'sb_publishable_Sme75O8Zp87P3ptnWNd5Zw_FtYazzKJ';
-    const _supabase = supabase.createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
-
+    // قاعدة البيانات (LocalStorage)
+    let users = JSON.parse(localStorage.getItem('yr_users')) || [];
+    let chats = JSON.parse(localStorage.getItem('yr_chats')) || [];
+    let notis = JSON.parse(localStorage.getItem('yr_notis')) || [{id:1, text:"مرحباً بكم في عائلة YALLA RIDE الرسمية!", date:"2026-02-04"}];
     let currentUser = JSON.parse(sessionStorage.getItem('yr_sess')) || null;
-    let chats = [];
-    let users = JSON.parse(localStorage.getItem('yr_users')) || [
-        {name: "مطور التطبيق", email: "dev@yallaride.com", km: 9999}
-    ];
+
+    function isDev() { return currentUser && currentUser.email === "dev@yallaride.com"; }
 
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(id === 'chat') fetchMessages();
+        window.scrollTo(0,0);
         if(id === 'members') renderMembers();
+        if(id === 'chat') renderChat();
+        if(id === 'notifications') { renderNotis(); document.getElementById('noti-badge').classList.add('hidden'); }
         if(id === 'profile') renderProfile();
     }
 
-    async function fetchMessages() {
-        const { data, error } = await _supabase.from('messages').select('*').order('created_at', { ascending: true });
-        if (!error) { chats = data; renderChat(); }
+    // إدارة الأعضاء
+    function renderMembers() {
+        const q = document.getElementById('m-search').value.toLowerCase();
+        const list = document.getElementById('m-list');
+        const totalKm = users.reduce((s, u) => s + (parseFloat(u.km) || 0), 0);
+        
+        document.getElementById('stat-u').innerText = users.length;
+        document.getElementById('stat-k').innerText = totalKm.toFixed(0);
+        document.getElementById('stat-a').innerText = users.filter(u => u.km > 50).length;
+
+        list.innerHTML = users.filter(u => u.name.toLowerCase().includes(q)).map(u => `
+            <div class="card" style="display:flex; align-items:center; justify-content:space-between; padding:15px;">
+                <div style="display:flex; align-items:center; gap:15px;">
+                    <img src="${u.img || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+                    <div>
+                        <h4 style="margin:0">${u.name} ${u.email === 'dev@yallaride.com' ? '⭐' : ''}</h4>
+                        <small style="color:#64748b">${u.km} كم مقطوعة</small>
+                    </div>
+                </div>
+                ${isDev() ? `
+                    <div>
+                        <button class="admin-btn" style="background:var(--gold)" onclick="editKm('${u.email}')">تعديل</button>
+                        <button class="admin-btn" style="background:var(--danger); color:white" onclick="delUser('${u.email}')">حذف</button>
+                    </div>
+                ` : `<div style="font-weight:900; color:var(--primary)">#${users.indexOf(u)+1}</div>`}
+            </div>
+        `).join('');
     }
 
-    _supabase.channel('any').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => {
-        chats.push(p.new); renderChat();
-    }).subscribe();
-
-    async function sendMsg() {
-        const inp = document.getElementById('chat-input');
-        if(!inp.value.trim() || !currentUser) return;
-        const { error } = await _supabase.from('messages').insert([{ name: currentUser.name, text: inp.value, email: currentUser.email }]);
-        if(error) alert("خطأ: " + error.message); else inp.value = '';
+    function editKm(email) {
+        const u = users.find(x => x.email === email);
+        const val = prompt(`تعديل المسافة لـ ${u.name}:`, u.km);
+        if(val !== null) { u.km = parseFloat(val) || 0; sync(); renderMembers(); }
     }
 
+    function delUser(email) {
+        if(email === 'dev@yallaride.com') return;
+        if(confirm('حذف هذا العضو نهائياً؟')) { users = users.filter(u => u.email !== email); sync(); renderMembers(); }
+    }
+
+    // إدارة الدردشة
     function renderChat() {
         const win = document.getElementById('chat-win');
-        if(!win) return;
         document.getElementById('chat-form').classList.toggle('hidden', !currentUser);
-        win.innerHTML = chats.map(m => `<div class="msg ${currentUser && m.email === currentUser.email ? 'me' : 'others'}"><small style="display:block; font-size:0.6rem; font-weight:bold; color:var(--gold)">${m.name}</small>${m.text}</div>`).join('');
+        win.innerHTML = chats.map((m, i) => `
+            <div class="msg ${currentUser && m.email === currentUser.email ? 'me' : 'others'}">
+                <small style="display:block; font-size:0.6rem; font-weight:bold;">${m.name} ${isDev() ? `<i class="fa-solid fa-trash" onclick="delMsg(${i})" style="color:red; cursor:pointer; margin-right:5px"></i>` : ''}</small>
+                ${m.text}
+            </div>
+        `).join('');
         win.scrollTop = win.scrollHeight;
     }
 
-    function renderMembers() {
-        const q = document.getElementById('m-search').value.toLowerCase();
-        document.getElementById('m-list').innerHTML = users.filter(u => u.name.toLowerCase().includes(q)).map(u => `<div class="card"><h4>${u.name}</h4><p>${u.km} كم</p></div>`).join('');
+    function sendMsg() {
+        const inp = document.getElementById('chat-input');
+        if(!inp.value) return;
+        chats.push({ name: currentUser.name, email: currentUser.email, text: inp.value });
+        sync(); inp.value = ''; renderChat();
     }
 
-    function processAuth() {
-        const n = document.getElementById('auth-name').value, e = document.getElementById('auth-email').value;
-        if(!n || !e) return alert("أكمل البيانات");
-        currentUser = { name: n, email: e, km: 0 };
-        if(!users.find(x => x.email === e)) { users.push(currentUser); localStorage.setItem('yr_users', JSON.stringify(users)); }
-        sessionStorage.setItem('yr_sess', JSON.stringify(currentUser));
+    function delMsg(i) { chats.splice(i, 1); sync(); renderChat(); }
+
+    // إدارة الإشعارات
+    function renderNotis() {
+        const list = document.getElementById('noti-list');
+        document.getElementById('dev-noti-box').classList.toggle('hidden', !isDev());
+        list.innerHTML = notis.map(n => `
+            <div class="card" style="border-right: 5px solid var(--gold); position:relative;">
+                <small style="color:var(--gold)">${n.date}</small>
+                <p style="margin-top:5px;">${n.text}</p>
+                ${isDev() ? `<i class="fa-solid fa-circle-xmark" onclick="delNoti(${n.id})" style="position:absolute; left:15px; top:15px; color:var(--danger); cursor:pointer;"></i>` : ''}
+            </div>
+        `).reverse().join('');
+    }
+
+    function publishNoti() {
+        const txt = document.getElementById('noti-text');
+        if(!txt.value) return;
+        notis.push({ id: Date.now(), text: txt.value, date: new Date().toLocaleDateString('ar-EG') });
+        sync(); txt.value = ''; renderNotis();
+    }
+
+    function delNoti(id) { notis = notis.filter(n => n.id !== id); sync(); renderNotis(); }
+
+    // المصادقة
+    async function processAuth() {
+        const e = document.getElementById('auth-email').value, p = document.getElementById('auth-pass').value;
+        const isReg = !document.getElementById('reg-fields').classList.contains('hidden');
+
+        if(!isReg && e === 'dev@yallaride.com' && p === 'Dev2026') {
+            currentUser = { name: "مطور المنصة", email: e, img: "IMG_0660.PNG", km: 9999 };
+            sessionStorage.setItem('yr_sess', JSON.stringify(currentUser));
+            updateUI(); showPage('home'); return;
+        }
+
+        if(isReg) {
+            const n = document.getElementById('reg-name').value, f = document.getElementById('reg-img').files[0];
+            if(!n || !e || !p) return alert("يرجى ملء كافة الحقول");
+            let imgData = "https://via.placeholder.com/150";
+            if(f) {
+                const reader = new FileReader();
+                reader.readAsDataURL(f);
+                reader.onload = () => { finalizeReg(n, e, p, reader.result); };
+                return;
+            }
+            finalizeReg(n, e, p, imgData);
+        } else {
+            const u = users.find(u => u.email === e && u.pass === p);
+            if(u) { currentUser = u; sessionStorage.setItem('yr_sess', JSON.stringify(u)); updateUI(); showPage('home'); }
+            else alert("بيانات الدخول غير صحيحة");
+        }
+    }
+
+    function finalizeReg(n, e, p, img) {
+        const newUser = { name: n, email: e, pass: p, img: img, km: 0 };
+        users.push(newUser); sync();
+        currentUser = newUser; sessionStorage.setItem('yr_sess', JSON.stringify(newUser));
         updateUI(); showPage('home');
     }
 
+    // البروفايل
     function renderProfile() {
+        const con = document.getElementById('profile-content');
         if(!currentUser) return;
-        document.getElementById('profile-content').innerHTML = `<h2>${currentUser.name}</h2><p>${currentUser.email}</p><button onclick="logout()">خروج</button>`;
+        let rank = "عضو جديد";
+        if(currentUser.km > 100) rank = "دراج فضي";
+        if(currentUser.km > 500) rank = "دراج ذهبي";
+        if(currentUser.email === 'dev@yallaride.com') rank = "المطور المعتمد";
+
+        con.innerHTML = `
+            <img src="${currentUser.img}" style="width:150px; height:150px; border-radius:50%; border:4px solid var(--primary); object-fit:cover; margin-bottom:20px;">
+            <h2 style="margin:0">${currentUser.name}</h2>
+            <p style="color:var(--gold); font-weight:bold;">${rank}</p>
+            <div class="card" style="margin:20px 0; background:rgba(0,0,0,0.2)">
+                <h1 style="font-size:3rem; color:var(--primary);">${currentUser.km}</h1>
+                <p>كيلومتر إجمالي</p>
+            </div>
+            ${isDev() ? `<button onclick="fullWipe()" style="background:var(--danger); margin-bottom:10px;">تصفير كافة البيانات (Dev Only)</button>` : ''}
+            <button onclick="logout()" style="background:#444;">تسجيل الخروج</button>
+        `;
+    }
+
+    function fullWipe() { if(confirm('سيتم حذف كل شيء! هل أنت متأكد؟')) { localStorage.clear(); location.reload(); } }
+
+    function sync() {
+        localStorage.setItem('yr_users', JSON.stringify(users));
+        localStorage.setItem('yr_chats', JSON.stringify(chats));
+        localStorage.setItem('yr_notis', JSON.stringify(notis));
     }
 
     function updateUI() {
@@ -221,8 +437,20 @@
     }
 
     function logout() { sessionStorage.clear(); currentUser = null; updateUI(); showPage('home'); }
+    function toggleAuth() { 
+        const isReg = document.getElementById('reg-fields').classList.toggle('hidden');
+        document.getElementById('auth-title').innerText = isReg ? "تسجيل دخول" : "إنشاء حساب جديد";
+        document.getElementById('auth-toggle').innerText = isReg ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب؟ سجل دخولك";
+    }
+
+    // تهيئة الإشعارات
+    if(notis.length > 0) {
+        const badge = document.getElementById('noti-badge');
+        badge.innerText = notis.length;
+        badge.classList.remove('hidden');
+    }
+
     updateUI();
 </script>
 </body>
-</html>
-
+                                                                                                              </html>
